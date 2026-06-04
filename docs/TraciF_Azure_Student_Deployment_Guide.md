@@ -87,12 +87,37 @@ This guide provides a step-by-step procedure to deploy the **TraciF Premium Hosp
 7. **REPEAT** all steps above to create `VM-APP-02` (Make sure to select `Zone 2`).
 
 ### 2.4 Azure Load Balancer
-1. Go to **Load Balancers** > Create.
-2. Name: `LB-TRACIF-PROD`, Type: `Public`, SKU: `Standard`.
-3. **Frontend IP**: Create new public IP.
-4. **Backend Pool**: Add `VM-APP-01` and `VM-APP-02`.
-5. **Health Probe**: Port `80`, Protocol `TCP`, Interval `5s`.
-6. **Load Balancing Rule**: Forward Port 80 to Backend Port 80.
+1. Go to **Load Balancers** > Create > **Standard Load balancer**.
+2. **Basics tab**:
+   - **Subscription**: `Azure for Students`
+   - **Resource group**: `RG-TRACIF-PROD`
+   - **Name**: `LB-TRACIF-PROD`
+   - **Region**: `Southeast Asia` (Must match VM region).
+   - **SKU**: `Standard`
+   - **Type**: `Public`
+   - **Tier**: `Regional`
+3. **Frontend IP configuration tab**:
+   - Click **+ Add a frontend IP configuration**.
+   - **Name**: `Frontend-TraciF`
+   - **Public IP address**: Click `Create new` > Name it `IP-LoadBalancer-TraciF` > OK.
+   - Click **Add**.
+4. **Backend pools tab**:
+   - Click **+ Add a backend pool**.
+   - **Name**: `BackendPool-TraciF`
+   - **Virtual network**: `VNet-TraciF`
+   - **Backend Pool Configuration**: `NIC`
+   - Under IP Configurations, click **+ Add**, select both `VM-APP-01` and `VM-APP-02`, click **Add**, then click **Save**.
+5. **Inbound rules tab (Load balancing rule)**:
+   - Click **+ Add a load balancing rule**.
+   - **Name**: `LBRule-TraciF`
+   - **IP Version**: `IPv4`
+   - **Frontend IP address**: Select `Frontend-TraciF`.
+   - **Backend pool**: Select `BackendPool-TraciF`.
+   - **Protocol**: `TCP`, **Port**: `80`, **Backend port**: `80`.
+   - **Health probe**: Click `Create new` > Name: `HealthProbe-TraciF`, Protocol: `TCP`, Port: `80`, Interval: `5`. Click Save.
+   - **Session persistence**: `None`.
+   - Click **Save**.
+6. Click **Review + create** > **Create**.
 
 ---
 
