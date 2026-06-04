@@ -34,9 +34,9 @@ This certification evaluates whether the application has genuinely transitioned 
 - [ ] Photographic Evidence Collected
 
 ### CURRENT DEPLOYMENT STATUS: 
-**🔴 NOT DEPLOYED (PENDING EVIDENCE)**
+**🔴 NOT DEPLOYED (FAILED - MISSING EVIDENCE)**
 
-> **WARNING**: The codebase is 100% production-ready and the Azure deployment playbooks are complete. However, real-world execution in the Azure Portal has not yet been verified. Once screenshots and failover tests are completed, this status will be upgraded to **🟢 FULLY DEPLOYED**.
+> **WARNING**: The codebase is 100% production-ready and the Azure deployment playbooks are complete. However, real-world execution in the Azure Portal has failed validation due to completely missing screenshot evidence in `docs/images/`.
 
 ---
 

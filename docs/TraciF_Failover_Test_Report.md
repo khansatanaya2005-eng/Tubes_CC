@@ -26,9 +26,9 @@ To prove the robustness of the 3-Tier Architecture, TraciF must survive the sudd
 
 | Checkpoint | Expected Result | Actual Result |
 |------------|-----------------|---------------|
-| Login Success | User dashboard loads | ⏳ PENDING |
-| Refresh Page | User remains logged in | ⏳ PENDING |
-| Database Session Table | `sessions` table has an active record | ⏳ PENDING |
+| Login Success | User dashboard loads | ❌ MISSING EVIDENCE |
+| Refresh Page | User remains logged in | ❌ MISSING EVIDENCE |
+| Database Session Table | `sessions` table has an active record | ❌ MISSING EVIDENCE |
 
 ---
 
@@ -44,14 +44,14 @@ To prove the robustness of the 3-Tier Architecture, TraciF must survive the sudd
 
 | Verification | Expected Result | Actual Result | Evidence Required |
 |--------------|-----------------|---------------|-------------------|
-| Web Traffic | LB automatically routes 100% traffic to `VM-APP-02`. | ⏳ PENDING | `16-failover-test.png` |
-| Application State | Page loads successfully without 502 errors. | ⏳ PENDING | `16-failover-test.png` |
-| Session State | User is **STILL LOGGED IN** (Because session is in DB, not VM1 RAM). | ⏳ PENDING | `16-failover-test.png` |
+| Web Traffic | LB automatically routes 100% traffic to `VM-APP-02`. | ❌ MISSING EVIDENCE | `16-failover-test.png` |
+| Application State | Page loads successfully without 502 errors. | ❌ MISSING EVIDENCE | `16-failover-test.png` |
+| Session State | User is **STILL LOGGED IN** (Because session is in DB, not VM1 RAM). | ❌ MISSING EVIDENCE | `16-failover-test.png` |
 
 ---
 
 ## 4. Test Conclusion
 
-**Status**: ⏳ AWAITING EXECUTION
+**Status**: ❌ FAILED (MISSING EVIDENCE)
 
 *(Once executed, replace the PENDING tags with PASSED and embed the screenshot evidence here to finalize the report for academic grading.)*

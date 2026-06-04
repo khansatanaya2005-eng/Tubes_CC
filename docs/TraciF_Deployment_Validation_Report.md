@@ -9,15 +9,15 @@
 
 | Resource | Expected Name | Status | IP Address | Evidence File |
 |----------|---------------|--------|------------|---------------|
-| Resource Group | `RG-TRACIF-PROD` | ⏳ PENDING | N/A | `01-resource-group.png` |
-| Virtual Network | `10.0.0.0/16` | ⏳ PENDING | N/A | `02-vnet.png` |
-| LB Subnet | `10.0.0.0/24` | ⏳ PENDING | N/A | `03-subnet-lb.png` |
-| App Subnet | `10.0.1.0/24` | ⏳ PENDING | N/A | `04-subnet-app.png` |
-| DB Subnet | `10.0.2.0/24` | ⏳ PENDING | N/A | `05-subnet-db.png` |
-| Network Security Group | `NSG-APP` | ⏳ PENDING | N/A | `06-nsg.png` |
-| Application Node 1 | `VM-APP-01` | ⏳ PENDING | `10.0.1.4` | `07-vm-app-01.png` |
-| Application Node 2 | `VM-APP-02` | ⏳ PENDING | `10.0.1.5` | `08-vm-app-02.png` |
-| Database | Azure MySQL Flexible | ⏳ PENDING | `10.0.2.4` | `09-mysql-flexible-server.png` |
+| Resource Group | `RG-TRACIF-PROD` | ❌ MISSING EVIDENCE | N/A | `01-resource-group.png` |
+| Virtual Network | `10.0.0.0/16` | ❌ MISSING EVIDENCE | N/A | `02-vnet.png` |
+| LB Subnet | `10.0.0.0/24` | ❌ MISSING EVIDENCE | N/A | `03-subnet-lb.png` |
+| App Subnet | `10.0.1.0/24` | ❌ MISSING EVIDENCE | N/A | `04-subnet-app.png` |
+| DB Subnet | `10.0.2.0/24` | ❌ MISSING EVIDENCE | N/A | `05-subnet-db.png` |
+| Network Security Group | `NSG-APP` | ❌ MISSING EVIDENCE | N/A | `06-nsg.png` |
+| Application Node 1 | `VM-APP-01` | ❌ MISSING EVIDENCE | `10.0.1.4` | `07-vm-app-01.png` |
+| Application Node 2 | `VM-APP-02` | ❌ MISSING EVIDENCE | `10.0.1.5` | `08-vm-app-02.png` |
+| Database | Azure MySQL Flexible | ❌ MISSING EVIDENCE | `10.0.2.4` | `09-mysql-flexible-server.png` |
 
 ---
 
@@ -25,10 +25,10 @@
 
 | Verification Item | Command / Test | Expected Result | Actual Result |
 |-------------------|----------------|-----------------|---------------|
-| Code Deployment (VM1) | `cd /var/www/tracif && git status` | `On branch main` | ⏳ PENDING |
-| Code Deployment (VM2) | `cd /var/www/tracif && git status` | `On branch main` | ⏳ PENDING |
-| Database Connectivity | `php artisan migrate:status` | Shows migrations | ⏳ PENDING |
-| Storage Persmissions | `ls -la storage` | `www-data` ownership | ⏳ PENDING |
+| Code Deployment (VM1) | `cd /var/www/tracif && git status` | `On branch main` | ❌ MISSING EVIDENCE |
+| Code Deployment (VM2) | `cd /var/www/tracif && git status` | `On branch main` | ❌ MISSING EVIDENCE |
+| Database Connectivity | `php artisan migrate:status` | Shows migrations | ❌ MISSING EVIDENCE |
+| Storage Persmissions | `ls -la storage` | `www-data` ownership | ❌ MISSING EVIDENCE |
 
 ---
 
@@ -46,7 +46,7 @@
   "version": "1.0.0"
 }
 ```
-**Actual Output**: ⏳ PENDING EVIDENCE (`14-health-endpoint.png`)
+**Actual Output**: ❌ MISSING EVIDENCE (`14-health-endpoint.png`)
 
 ---
 
@@ -54,15 +54,15 @@
 
 - **Verification Strategy**: Refresh the homepage 10 times via the Public IP. Check Nginx `access.log` on both `VM-APP-01` and `VM-APP-02`.
 - **Expected Distribution**: ~5 requests handled by VM1, ~5 requests handled by VM2 (Round Robin).
-- **Status**: ⏳ PENDING EVIDENCE (`15-load-balancer-test.png`)
+- **Status**: ❌ MISSING EVIDENCE (`15-load-balancer-test.png`)
 
 ---
 
 ## 5. Security & Performance Validation (Phases 21.7 & 21.8)
 
-- **RoleMiddleware & Policies**: ⏳ PENDING (Test `kasir` login in production).
-- **Security Headers**: ⏳ PENDING (Inspect HTTP headers in browser network tab).
-- **Performance**: ⏳ PENDING (Verify Dashboard BI loads in < 2 seconds).
+- **RoleMiddleware & Policies**: ❌ MISSING EVIDENCE (Test `kasir` login in production).
+- **Security Headers**: ❌ MISSING EVIDENCE (Inspect HTTP headers in browser network tab).
+- **Performance**: ❌ MISSING EVIDENCE (Verify Dashboard BI loads in < 2 seconds).
 
 ---
 
@@ -70,10 +70,10 @@
 
 | Cost Center | Forecast ($/mo) | Actual Burn Rate | Variance |
 |-------------|-----------------|------------------|----------|
-| VM Instances| ~$15.00         | ⏳ PENDING       | ⏳ PENDING |
-| Load Balancer| ~$7.50          | ⏳ PENDING       | ⏳ PENDING |
-| Database    | ~$12.50         | ⏳ PENDING       | ⏳ PENDING |
-| **TOTAL**   | **~$35.00**     | **⏳ PENDING**   | **⏳ PENDING** |
+| VM Instances| ~$15.00         | ❌ MISSING EVIDENCE       | ❌ MISSING EVIDENCE |
+| Load Balancer| ~$7.50          | ❌ MISSING EVIDENCE       | ❌ MISSING EVIDENCE |
+| Database    | ~$12.50         | ❌ MISSING EVIDENCE       | ❌ MISSING EVIDENCE |
+| **TOTAL**   | **~$35.00**     | **❌ MISSING EVIDENCE**   | **❌ MISSING EVIDENCE** |
 
 *Threshold limit: USD 100.00 (Azure Student Credit).*
 
