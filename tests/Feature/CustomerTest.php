@@ -13,7 +13,7 @@ class CustomerTest extends TestCase
     public function test_kasir_can_view_customers()
     {
         $kasir = User::factory()->create(['role' => 'kasir']);
-        $response = $this->actingAs($kasir)->get('/admin/pelanggan');
+        $response = $this->actingAs($kasir)->get('/admin/guest-registry');
         $response->assertStatus(200);
     }
 }

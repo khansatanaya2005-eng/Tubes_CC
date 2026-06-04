@@ -13,7 +13,7 @@ class ProductTest extends TestCase
     public function test_admin_can_view_products()
     {
         $admin = User::factory()->create(['role' => 'admin']);
-        $response = $this->actingAs($admin)->get('/admin/produk');
+        $response = $this->actingAs($admin)->get('/admin/culinary-menu');
         $response->assertStatus(200);
     }
 }

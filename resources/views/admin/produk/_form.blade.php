@@ -1,66 +1,68 @@
 {{-- resources/views/admin/produk/_form.blade.php --}}
 @csrf
-<div class="mb-4">
-    <label for="nama_produk" class="block text-sm font-medium text-gray-700 mb-1">Nama Produk</label>
+<div class="mb-6">
+    <label for="nama_produk" class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-widest">Item Name</label>
     <input type="text" name="nama_produk" id="nama_produk" 
            value="{{ old('nama_produk', $produk->nama_produk ?? '') }}"
-           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 @error('nama_produk') border-red-500 @enderror"
+           class="w-full h-14 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:border-luxury-gold focus:ring-1 focus:ring-luxury-gold transition duration-200 outline-none text-luxury-charcoal"
            required>
     @error('nama_produk')
-        <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+        <p class="mt-2 text-xs text-red-500 font-medium">{{ $message }}</p>
     @enderror
 </div>
 
-<div class="mb-4">
-    <label for="harga_produk" class="block text-sm font-medium text-gray-700 mb-1">Harga Produk (Rp)</label>
-    <input type="number" name="harga_produk" id="harga_produk" step="0.01" min="0"
-           value="{{ old('harga_produk', $produk->harga_produk ?? '') }}"
-           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 @error('harga_produk') border-red-500 @enderror"
-           required>
-    @error('harga_produk')
-        <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-    @enderror
-</div>
-
-<div class="mb-4">
-    <label for="kategori_produk" class="block text-sm font-medium text-gray-700 mb-1">Kategori Produk (Opsional)</label>
-    <input type="text" name="kategori_produk" id="kategori_produk"
-           value="{{ old('kategori_produk', $produk->kategori_produk ?? '') }}"
-           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 @error('kategori_produk') border-red-500 @enderror">
-    @error('kategori_produk')
-        <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-    @enderror
-</div>
-
-<div class="mb-4">
-    <label for="deskripsi_produk" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Produk (Opsional)</label>
-    <textarea name="deskripsi_produk" id="deskripsi_produk" rows="3"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 @error('deskripsi_produk') border-red-500 @enderror">{{ old('deskripsi_produk', $produk->deskripsi_produk ?? '') }}</textarea>
-    @error('deskripsi_produk')
-        <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-    @enderror
+<div class="mb-6 flex gap-6">
+    <div class="w-1/2">
+        <label for="harga_produk" class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-widest">Price (Rp)</label>
+        <input type="number" name="harga_produk" id="harga_produk" step="0.01" min="0"
+               value="{{ old('harga_produk', $produk->harga_produk ?? '') }}"
+               class="w-full h-14 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:border-luxury-gold focus:ring-1 focus:ring-luxury-gold transition duration-200 outline-none text-luxury-charcoal"
+               required>
+        @error('harga_produk')
+            <p class="mt-2 text-xs text-red-500 font-medium">{{ $message }}</p>
+        @enderror
+    </div>
+    
+    <div class="w-1/2">
+        <label for="kategori_produk" class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-widest">Category</label>
+        <input type="text" name="kategori_produk" id="kategori_produk" placeholder="e.g. Appetizer, Main Course"
+               value="{{ old('kategori_produk', $produk->kategori_produk ?? '') }}"
+               class="w-full h-14 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:border-luxury-gold focus:ring-1 focus:ring-luxury-gold transition duration-200 outline-none text-luxury-charcoal">
+        @error('kategori_produk')
+            <p class="mt-2 text-xs text-red-500 font-medium">{{ $message }}</p>
+        @enderror
+    </div>
 </div>
 
 <div class="mb-6">
-    <label for="foto_produk" class="block text-sm font-medium text-gray-700 mb-1">Foto Produk (Opsional)</label>
+    <label for="deskripsi_produk" class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-widest">Description</label>
+    <textarea name="deskripsi_produk" id="deskripsi_produk" rows="3"
+              class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-luxury-gold focus:ring-1 focus:ring-luxury-gold transition duration-200 outline-none text-luxury-charcoal resize-none">{{ old('deskripsi_produk', $produk->deskripsi_produk ?? '') }}</textarea>
+    @error('deskripsi_produk')
+        <p class="mt-2 text-xs text-red-500 font-medium">{{ $message }}</p>
+    @enderror
+</div>
+
+<div class="mb-8">
+    <label for="foto_produk" class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-widest">Item Photo</label>
     <input type="file" name="foto_produk" id="foto_produk"
-           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 @error('foto_produk') border-red-500 @enderror">
+           class="w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:uppercase file:tracking-widest file:bg-slate-100 file:text-luxury-charcoal hover:file:bg-slate-200">
     @error('foto_produk')
-        <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+        <p class="mt-2 text-xs text-red-500 font-medium">{{ $message }}</p>
     @enderror
     @if (isset($produk) && $produk->foto_produk)
-        <div class="mt-2">
-            <img src="{{ Storage::url($produk->foto_produk) }}" alt="{{ $produk->nama_produk }}" class="h-20 w-20 object-cover rounded">
-            <p class="text-xs text-gray-500 mt-1">Foto saat ini</p>
-             {{-- Untuk menyimpan path foto lama jika tidak ada file baru yang diupload pada proses update --}}
-            {{-- <input type="hidden" name="foto_produk_lama" value="{{ $produk->foto_produk }}"> --}}
-             {{-- Logika di controller untuk $data['foto_produk'] = $produk->foto_produk; saat update sudah cukup --}}
+        <div class="mt-4 flex items-center gap-4">
+            <img src="{{ Storage::url($produk->foto_produk) }}" alt="{{ $produk->nama_produk }}" class="h-16 w-16 object-cover rounded-lg border border-slate-200">
+            <span class="text-xs font-medium text-slate-400">Current Photo</span>
         </div>
     @endif
 </div>
 
-<div>
-    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline">
-        {{ $tombol_submit ?? 'Simpan Produk' }}
+<div class="flex items-center gap-4 pt-4 border-t border-slate-100">
+    <a href="{{ route('admin.produk.index') }}" class="h-14 px-6 flex items-center justify-center bg-slate-100 text-slate-600 text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-slate-200 transition-colors">
+        Cancel
+    </a>
+    <button type="submit" class="flex-1 h-14 bg-luxury-charcoal hover:bg-black text-luxury-ivory text-xs font-bold uppercase tracking-widest rounded-xl transition-colors shadow-md">
+        {{ $tombol_submit ?? 'Save Item' }}
     </button>
 </div>

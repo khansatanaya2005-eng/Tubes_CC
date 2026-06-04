@@ -53,6 +53,10 @@
                 </a>
                 
                 <a href="{{ route('admin.notifikasi.index') }}" class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('admin.notifikasi.*') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
+                    <span class="font-medium tracking-wide text-sm">System Notifications</span>
+                </a>
+
+                <a href="{{ route('admin.activitylogs.index') }}" class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('admin.activitylogs.*') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
                     <span class="font-medium tracking-wide text-sm">Activity Logs</span>
                 </a>
             @endif

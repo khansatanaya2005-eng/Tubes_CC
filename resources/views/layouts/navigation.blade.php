@@ -38,7 +38,7 @@
                         </div>
                         <div class="hidden md:flex flex-col items-start mr-2">
                             <span class="text-sm font-bold text-luxury-charcoal leading-tight">{{ Auth::user()->name }}</span>
-                            <span class="text-[10px] text-slate-500 capitalize leading-tight mt-0.5">Administrator</span>
+                            <span class="text-[10px] text-slate-500 uppercase tracking-widest leading-tight mt-0.5">{{ Auth::user()->role }}</span>
                         </div>
                         <svg class="w-4 h-4 text-slate-400 hidden md:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>

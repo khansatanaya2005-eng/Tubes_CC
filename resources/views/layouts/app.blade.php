@@ -16,13 +16,28 @@
 <body class="h-full font-sans antialiased text-luxury-charcoal bg-luxury-ivory overflow-hidden">
     <div x-data="{ open: false }" class="flex h-screen overflow-hidden bg-[#F4F2EE]">
         
-        <!-- FIXED SIDEBAR -->
-        @include('layouts.partials.admin-sidebar')
+        @if(Auth::check())
+            <!-- FIXED SIDEBAR -->
+            @include('layouts.partials.admin-sidebar')
+        @endif
 
         <!-- MAIN CONTENT WRAPPER -->
         <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
-            <!-- FIXED TOP BAR -->
-            @include('layouts.navigation')
+            
+            @if(Auth::check())
+                <!-- FIXED TOP BAR -->
+                @include('layouts.navigation')
+            @else
+                <!-- GUEST TOP BAR FOR TABLE VIEW -->
+                <div class="h-20 bg-white/80 backdrop-blur-md border-b border-slate-100 flex items-center px-6 lg:px-10 flex-shrink-0 z-30">
+                    <a href="{{ route('pelanggan.katalog') }}" class="flex items-center">
+                        <span class="text-2xl font-serif font-bold text-luxury-charcoal tracking-tight">TraciF.</span>
+                    </a>
+                    <div class="ml-auto flex items-center space-x-4">
+                        <a href="{{ route('pelanggan.orders') }}" class="text-sm font-bold text-slate-500 hover:text-luxury-gold uppercase tracking-widest transition-colors">My Table Orders</a>
+                    </div>
+                </div>
+            @endif
 
             <!-- SCROLLABLE CONTENT -->
             <main class="flex-1 overflow-y-auto p-6 lg:p-10 transition-all duration-300">

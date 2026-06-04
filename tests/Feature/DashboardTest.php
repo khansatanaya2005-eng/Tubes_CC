@@ -13,7 +13,7 @@ class DashboardTest extends TestCase
     public function test_admin_can_view_dashboard()
     {
         $admin = User::factory()->create(['role' => 'admin']);
-        $response = $this->actingAs($admin)->get('/admin/dashboard');
+        $response = $this->actingAs($admin)->get('/admin/executive-overview');
         $response->assertStatus(200);
     }
 }

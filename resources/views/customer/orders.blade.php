@@ -42,7 +42,12 @@
                             <td class="px-8 py-5 whitespace-nowrap text-sm font-bold text-luxury-charcoal text-right">Rp {{ number_format($transaksi->total_harga_penjualan, 0, ',', '.') }}</td>
                         </tr>
                     @empty
-                        <tr><td colspan="5" class="px-8 py-12 text-center text-sm font-medium text-slate-400">No orders have been placed for this table yet.</td></tr>
+                        <tr>
+                            <td colspan="5" class="px-8 py-16 text-center">
+                                <svg class="w-12 h-12 mx-auto text-slate-200 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                                <span class="text-sm font-medium text-slate-400">No orders have been placed for this table yet.</span>
+                            </td>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>

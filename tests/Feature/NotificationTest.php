@@ -13,7 +13,7 @@ class NotificationTest extends TestCase
     public function test_user_can_view_notifications()
     {
         $user = User::factory()->create(['role' => 'admin']);
-        $response = $this->actingAs($user)->get('/admin/notifikasi');
+        $response = $this->actingAs($user)->get('/admin/notifications');
         $response->assertStatus(200);
     }
 }

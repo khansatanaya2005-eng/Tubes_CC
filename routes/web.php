@@ -58,10 +58,10 @@ Route::get('/health', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
 
     // Dashboard
-    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/admin/executive-overview', [DashboardController::class, 'index'])->name('dashboard');
 
     // CRUD Pelanggan (Admin & Kasir)
-    Route::resource('/admin/pelanggan', PelangganController::class)->names([
+    Route::resource('/admin/guest-registry', PelangganController::class)->names([
         'index' => 'admin.pelanggan.index',
         'create' => 'admin.pelanggan.create',
         'store' => 'admin.pelanggan.store',
@@ -71,7 +71,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ])->except(['show'])->middleware('role:admin,kasir');
 
     // CRUD Produk (Admin Only)
-    Route::resource('/admin/produk', ProdukController::class)->names([
+    Route::resource('/admin/culinary-menu', ProdukController::class)->names([
         'index' => 'admin.produk.index',
         'create' => 'admin.produk.create',
         'store' => 'admin.produk.store',
@@ -81,25 +81,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ])->except(['show'])->middleware('role:admin');
 
     // Riwayat Penjualan (Admin & Kasir)
-    Route::get('/admin/riwayat-penjualan', [PenjualanController::class, 'index'])->name('admin.riwayatpenjualan.index')->middleware('role:admin,kasir');
-    Route::get('/admin/riwayat-penjualan/{penjualan}', [PenjualanController::class, 'show'])->name('admin.riwayatpenjualan.show')->middleware('role:admin,kasir');
+    Route::get('/admin/transaction-log', [PenjualanController::class, 'index'])->name('admin.riwayatpenjualan.index')->middleware('role:admin,kasir');
+    Route::get('/admin/transaction-log/{penjualan}', [PenjualanController::class, 'show'])->name('admin.riwayatpenjualan.show')->middleware('role:admin,kasir');
 
     // Fitur Pesanan / POS (Admin & Kasir)
     Route::middleware('role:admin,kasir')->group(function () {
-        Route::get('/admin/pesanan', [PesananController::class, 'index'])->name('admin.pesanan.index');
-        Route::post('/admin/pesanan/add-to-cart/{produk}', [PesananController::class, 'addToCart'])->name('admin.pesanan.addToCart');
-        Route::post('/admin/pesanan/update-cart', [PesananController::class, 'updateCart'])->name('admin.pesanan.updateCart');
-        Route::post('/admin/pesanan/remove-from-cart', [PesananController::class, 'removeFromCart'])->name('admin.pesanan.removeFromCart');
-        Route::post('/admin/pesanan/clear-cart', [PesananController::class, 'clearCart'])->name('admin.pesanan.clearCart');
-        Route::post('/admin/pesanan/store', [PesananController::class, 'storeOrder'])->name('admin.pesanan.storeOrder');
+        Route::get('/admin/dine-in-orders', [PesananController::class, 'index'])->name('admin.pesanan.index');
+        Route::post('/admin/dine-in-orders/add-to-cart/{produk}', [PesananController::class, 'addToCart'])->name('admin.pesanan.addToCart');
+        Route::post('/admin/dine-in-orders/update-cart', [PesananController::class, 'updateCart'])->name('admin.pesanan.updateCart');
+        Route::post('/admin/dine-in-orders/remove-from-cart', [PesananController::class, 'removeFromCart'])->name('admin.pesanan.removeFromCart');
+        Route::post('/admin/dine-in-orders/clear-cart', [PesananController::class, 'clearCart'])->name('admin.pesanan.clearCart');
+        Route::post('/admin/dine-in-orders/store', [PesananController::class, 'storeOrder'])->name('admin.pesanan.storeOrder');
     });
 
     // Activity Logs
-    Route::get('/admin/activity-logs', [App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('admin.activitylogs.index');
+    Route::get('/admin/activity-logs', [App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('admin.activitylogs.index')->middleware('role:admin');
 
     // Notifikasi
-    Route::get('/admin/notifikasi', [NotifikasiController::class, 'index'])->name('admin.notifikasi.index');
-    Route::post('/admin/notifikasi/mark-all-as-read', [NotifikasiController::class, 'markAllAsRead'])->name('admin.notifikasi.markAllAsRead');
+    Route::get('/admin/notifications', [NotifikasiController::class, 'index'])->name('admin.notifikasi.index')->middleware('role:admin,kasir');
+    Route::post('/admin/notifications/mark-all-as-read', [NotifikasiController::class, 'markAllAsRead'])->name('admin.notifikasi.markAllAsRead')->middleware('role:admin,kasir');
 
     // Profil (bawaan Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
