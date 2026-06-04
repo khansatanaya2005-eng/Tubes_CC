@@ -17,12 +17,12 @@ class ProductPolicy
 
     public function viewAny(User $user): bool
     {
-        return $user->role === 'kasir' || $user->role === 'user'; // User and Kasir can view
+        return $user->role === 'kasir' || $user->role === 'pelanggan'; // Pelanggan and Kasir can view
     }
 
     public function view(User $user, Produk $produk): bool
     {
-        return $user->role === 'kasir' || $user->role === 'user';
+        return $user->role === 'kasir' || $user->role === 'pelanggan';
     }
 
     public function create(User $user): bool

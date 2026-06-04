@@ -11,8 +11,19 @@ export default {
 
     theme: {
         extend: {
+            colors: {
+                luxury: {
+                    charcoal: '#1A1A1A',
+                    gold: '#C8A96B',
+                    champagne: '#E5D3A1',
+                    ivory: '#F8F6F2',
+                    pearl: '#FFFFFF',
+                    emerald: '#2E7D32',
+                },
+            },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Inter', ...defaultTheme.fontFamily.sans],
+                serif: ['Playfair Display', ...defaultTheme.fontFamily.serif],
             },
         },
     },

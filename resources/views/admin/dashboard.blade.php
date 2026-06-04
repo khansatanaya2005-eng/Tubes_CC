@@ -1,226 +1,316 @@
 <x-app-layout>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-
     <x-slot name="header">
-        {{-- Header ini akan ditampilkan oleh app.blade.php di dalam area konten --}}
-        <h2 class="font-semibold text-xl text-slate-800 leading-tight">
-            {{ __('Admin Dashboard') }}
-        </h2>
+        @if($role === 'admin')
+            {{ __('Executive Boardroom') }}
+        @elseif($role === 'kasir')
+            {{ __('Cashier Desk') }}
+        @else
+            {{ __('Customer Portal') }}
+        @endif
     </x-slot>
 
-    {{-- Konten utama dashboard dimulai di sini (di dalam {{ $slot }} di app.blade.php) --}}
-    <div class="bg-slate-50 py-2"> {{-- Menambahkan padding di sini atau di <main> di app.blade.php --}}
-        <div class="max-w-full mx-auto"> {{-- Menggunakan max-w-full agar mengisi konten --}}
-
-            <div class="bg-white overflow-hidden shadow-sm rounded-lg mb-6 p-6">
-                <h3 class="text-2xl font-bold text-slate-700">
-                    Selamat datang kembali, {{ $adminName }}!
+    <!-- Welcome Card -->
+    <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl shadow-[0_4px_20px_-4px_rgba(200,169,107,0.15)] mb-8 p-8 relative overflow-hidden">
+        <div class="absolute right-0 top-0 w-64 h-full bg-gradient-to-l from-luxury-ivory to-transparent opacity-50"></div>
+        <div class="relative z-10 flex items-center justify-between">
+            <div>
+                <h3 class="text-3xl font-serif font-bold text-luxury-charcoal tracking-wide mb-2">
+                    Welcome back, {{ $adminName }}
                 </h3>
+                <p class="text-slate-500 font-medium">Here's what's happening with your account today.</p>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <h4 class="text-slate-500 text-sm font-medium">PENGHASILAN HARI INI</h4>
-                    <p class="text-3xl font-bold text-slate-800 mt-2">Rp {{ number_format($penghasilanHariIni, 0, ',', '.') }}</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <h4 class="text-slate-500 text-sm font-medium">PESANAN HARI INI</h4>
-                    <p class="text-3xl font-bold text-slate-800 mt-2">{{ $pesananHariIni }} Transaksi</p>
-                </div>
-            </div>
-
-            <div class="mb-6 bg-white p-4 rounded-lg shadow-sm">
-                <form method="GET" action="{{ route('dashboard') }}" class="flex items-center space-x-3">
-                    <label for="period_days" class="text-sm font-medium text-slate-700">Tampilkan Data Untuk:</label>
-                    <select name="period_days" id="period_days" class="block w-auto border-gray-300 focus:border-sky-500 focus:ring-sky-500 rounded-md shadow-sm text-sm text-slate-700">
-                        <option value="7" {{ ($currentPeriodDays ?? 7) == 7 ? 'selected' : '' }}>7 Hari Terakhir</option>
-                        <option value="30" {{ ($currentPeriodDays ?? 7) == 30 ? 'selected' : '' }}>30 Hari Terakhir</option>
-                        <option value="90" {{ ($currentPeriodDays ?? 7) == 90 ? 'selected' : '' }}>90 Hari Terakhir</option>
-                    </select>
-                    <button type="submit" class="px-4 py-2 bg-sky-600 text-white text-sm font-medium rounded-md hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2">
-                        Filter
-                    </button>
-                </form>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <h4 class="text-lg font-semibold text-slate-700 mb-2" id="judulGrafikPenghasilan">Grafik Penghasilan ({{ $currentPeriodDays ?? 7 }} Hari Terakhir)</h4>
-                    <div class="relative h-80"> 
-                        <canvas id="grafikPenghasilan"></canvas>
+            
+            @if($role === 'admin')
+            <!-- Health Monitoring Widget -->
+            <div x-data="healthMonitor()" x-init="checkHealth()" class="hidden md:flex flex-col items-end">
+                <span class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-2">System Health</span>
+                <div class="flex items-center space-x-3">
+                    <div class="flex items-center space-x-1" :class="dbStatus === 'connected' ? 'text-luxury-emerald' : 'text-red-500'">
+                        <div class="w-2 h-2 rounded-full" :class="dbStatus === 'connected' ? 'bg-luxury-emerald animate-pulse' : 'bg-red-500'"></div>
+                        <span class="text-xs font-bold uppercase" x-text="dbStatus === 'connected' ? 'DB OK' : 'DB ERR'"></span>
                     </div>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <h4 class="text-lg font-semibold text-slate-700 mb-2" id="judulGrafikJumlahPesanan">Grafik Jumlah Pesanan ({{ $currentPeriodDays ?? 7 }} Hari Terakhir)</h4>
-                    <div class="relative h-80">
-                        <canvas id="grafikJumlahPesanan"></canvas>
+                    <div class="flex items-center space-x-1" :class="cacheStatus === 'connected' ? 'text-luxury-emerald' : 'text-red-500'">
+                        <div class="w-2 h-2 rounded-full" :class="cacheStatus === 'connected' ? 'bg-luxury-emerald animate-pulse' : 'bg-red-500'"></div>
+                        <span class="text-xs font-bold uppercase" x-text="cacheStatus === 'connected' ? 'CACHE OK' : 'CACHE ERR'"></span>
                     </div>
                 </div>
             </div>
-
-             <div class="bg-white overflow-hidden shadow-sm rounded-lg">
-                <div class="p-6 text-slate-900">
-                    <h3 class="text-lg font-medium text-slate-700 mb-4">Transaksi Terbaru</h3>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-slate-200">
-                            <thead class="bg-slate-50">
-                                <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">ID</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Waktu</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Pelanggan</th>
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">Total (Rp)</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-slate-200">
-                                @forelse ($transaksiTerbaru as $transaksi)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sky-600 hover:underline">
-                                            <a href="{{ route('admin.riwayatpenjualan.show', $transaksi->id_penjualan) }}">#{{ $transaksi->id_penjualan }}</a>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">{{ $transaksi->waktu_transaksi->format('d M Y, H:i') }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">{{ $transaksi->pelanggan->nama_pelanggan ?? 'Umum' }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-800 text-right">{{ number_format($transaksi->total_harga_penjualan, 0, ',', '.') }}</td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="4" class="px-6 py-4 text-center text-sm text-slate-500">Belum ada transaksi.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+            @endif
         </div>
     </div>
 
+    <!-- ADMIN VIEW -->
+    @if($role === 'admin')
+        <!-- Executive KPI Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Revenue Today -->
+            <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow group">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="text-slate-500 text-xs font-bold uppercase tracking-widest">Revenue Today</h4>
+                    <div class="p-2 bg-luxury-gold/10 rounded-lg text-luxury-gold group-hover:bg-luxury-gold group-hover:text-white transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                </div>
+                <p class="text-3xl font-serif font-bold text-luxury-charcoal">Rp {{ number_format($penghasilanHariIni, 0, ',', '.') }}</p>
+            </div>
+            <!-- Orders Today -->
+            <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow group">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="text-slate-500 text-xs font-bold uppercase tracking-widest">Orders Today</h4>
+                    <div class="p-2 bg-luxury-gold/10 rounded-lg text-luxury-gold group-hover:bg-luxury-gold group-hover:text-white transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg></div>
+                </div>
+                <p class="text-3xl font-serif font-bold text-luxury-charcoal">{{ $pesananHariIni }}</p>
+            </div>
+            <!-- Revenue Month -->
+            <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow group">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="text-slate-500 text-xs font-bold uppercase tracking-widest">Monthly Revenue</h4>
+                    <div class="p-2 bg-luxury-gold/10 rounded-lg text-luxury-gold group-hover:bg-luxury-gold group-hover:text-white transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg></div>
+                </div>
+                <p class="text-3xl font-serif font-bold text-luxury-charcoal">Rp {{ number_format($monthlyRevenue, 0, ',', '.') }}</p>
+            </div>
+            <!-- Orders Month -->
+            <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow group">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="text-slate-500 text-xs font-bold uppercase tracking-widest">Monthly Orders</h4>
+                    <div class="p-2 bg-luxury-gold/10 rounded-lg text-luxury-gold group-hover:bg-luxury-gold group-hover:text-white transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></div>
+                </div>
+                <p class="text-3xl font-serif font-bold text-luxury-charcoal">{{ $monthlyOrders }}</p>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="mb-6 bg-luxury-pearl p-4 rounded-xl shadow-sm border border-luxury-gold/30">
+            <form method="GET" action="{{ route('dashboard') }}" class="flex items-center space-x-3">
+                <label for="period_days" class="text-xs font-bold text-slate-500 uppercase tracking-widest">Timeframe:</label>
+                <select name="period_days" id="period_days" class="block w-48 border-luxury-gold/50 focus:border-luxury-gold focus:ring-luxury-gold rounded-lg shadow-sm text-sm text-luxury-charcoal bg-transparent py-2">
+                    <option value="7" {{ ($currentPeriodDays ?? 7) == 7 ? 'selected' : '' }}>Last 7 Days</option>
+                    <option value="30" {{ ($currentPeriodDays ?? 7) == 30 ? 'selected' : '' }}>Last 30 Days</option>
+                    <option value="90" {{ ($currentPeriodDays ?? 7) == 90 ? 'selected' : '' }}>Last 90 Days</option>
+                </select>
+                <button type="submit" class="px-5 py-2 bg-luxury-charcoal text-luxury-ivory text-xs font-bold tracking-widest uppercase rounded-lg hover:bg-black transition-colors shadow-md">
+                    Filter
+                </button>
+            </form>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div class="bg-luxury-pearl p-6 rounded-2xl shadow-sm border border-luxury-gold/30">
+                <h4 class="text-xl font-serif font-bold text-luxury-charcoal mb-6 border-b border-luxury-gold/20 pb-2">Revenue Growth</h4>
+                <div class="relative h-80"> 
+                    <canvas id="grafikPenghasilan"></canvas>
+                </div>
+            </div>
+            <div class="bg-luxury-pearl p-6 rounded-2xl shadow-sm border border-luxury-gold/30">
+                <h4 class="text-xl font-serif font-bold text-luxury-charcoal mb-6 border-b border-luxury-gold/20 pb-2">Transaction Volume</h4>
+                <div class="relative h-80">
+                    <canvas id="grafikJumlahPesanan"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Top Products & Recent Transactions -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-luxury-pearl rounded-2xl shadow-sm border border-luxury-gold/30 overflow-hidden">
+                <div class="p-6 border-b border-luxury-gold/20">
+                    <h4 class="text-xl font-serif font-bold text-luxury-charcoal">Recent Transactions</h4>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-luxury-gold/20">
+                        <thead class="bg-luxury-ivory/50">
+                            <tr>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Order ID</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Time</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Customer</th>
+                                <th class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-widest">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-luxury-pearl divide-y divide-luxury-gold/10">
+                            @forelse ($transaksiTerbaru as $transaksi)
+                                <tr class="hover:bg-luxury-ivory/50 transition-colors">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-luxury-gold">
+                                        <a href="{{ route('admin.riwayatpenjualan.show', $transaksi->id_penjualan) }}">#{{ str_pad($transaksi->id_penjualan, 5, '0', STR_PAD_LEFT) }}</a>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{{ $transaksi->waktu_transaksi->format('d M Y, H:i') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-800 font-medium">{{ $transaksi->pelanggan->nama_pelanggan ?? 'Walk-in Customer' }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-luxury-charcoal text-right">Rp {{ number_format($transaksi->total_harga_penjualan, 0, ',', '.') }}</td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="4" class="px-6 py-8 text-center text-sm text-slate-500 italic">No transactions found.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="bg-luxury-pearl rounded-2xl shadow-sm border border-luxury-gold/30 overflow-hidden">
+                <div class="p-6 border-b border-luxury-gold/20">
+                    <h4 class="text-xl font-serif font-bold text-luxury-charcoal">Top Products</h4>
+                </div>
+                <div class="p-6 space-y-4">
+                    @forelse($topProducts as $idx => $prod)
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-lg font-serif font-bold text-luxury-gold">#{{ $idx + 1 }}</span>
+                                <span class="text-sm font-semibold text-luxury-charcoal">{{ $prod->nama_produk }}</span>
+                            </div>
+                            <span class="text-sm text-slate-500 bg-luxury-ivory px-2 py-1 rounded-md">{{ $prod->total_terjual }} sold</span>
+                        </div>
+                    @empty
+                        <div class="text-center text-slate-500 text-sm italic">Not enough data.</div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- KASIR VIEW -->
+    @if($role === 'kasir')
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl p-6 shadow-sm">
+                <h4 class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">Orders Today</h4>
+                <p class="text-4xl font-serif font-bold text-luxury-charcoal">{{ $pesananHariIni }}</p>
+            </div>
+            <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl p-6 shadow-sm">
+                <h4 class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">Processed By You</h4>
+                <p class="text-4xl font-serif font-bold text-luxury-charcoal">{{ $pesananDiproses }}</p>
+            </div>
+            <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl p-6 shadow-sm">
+                <h4 class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">Total Customers</h4>
+                <p class="text-4xl font-serif font-bold text-luxury-charcoal">{{ $totalCustomers }}</p>
+            </div>
+        </div>
+
+        <div class="bg-luxury-pearl rounded-2xl shadow-sm border border-luxury-gold/30 overflow-hidden">
+            <div class="p-6 border-b border-luxury-gold/20 flex justify-between items-center">
+                <h4 class="text-xl font-serif font-bold text-luxury-charcoal">Recent Transactions</h4>
+                <a href="{{ route('admin.pesanan.index') }}" class="px-4 py-2 bg-luxury-charcoal text-luxury-gold text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-black transition-colors">New Order</a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-luxury-gold/20">
+                    <thead class="bg-luxury-ivory/50">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Order ID</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Time</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Customer</th>
+                            <th class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-widest">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-luxury-pearl divide-y divide-luxury-gold/10">
+                        @forelse ($transaksiTerbaru as $transaksi)
+                            <tr class="hover:bg-luxury-ivory/50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-luxury-gold">
+                                    <a href="{{ route('admin.riwayatpenjualan.show', $transaksi->id_penjualan) }}">#{{ str_pad($transaksi->id_penjualan, 5, '0', STR_PAD_LEFT) }}</a>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{{ $transaksi->waktu_transaksi->format('H:i') }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-800 font-medium">{{ $transaksi->pelanggan->nama_pelanggan ?? 'Walk-in' }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-luxury-charcoal text-right">Rp {{ number_format($transaksi->total_harga_penjualan, 0, ',', '.') }}</td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="4" class="px-6 py-8 text-center text-sm text-slate-500 italic">No transactions today.</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endif
+
+    <!-- PELANGGAN VIEW -->
+    @if($role === 'pelanggan')
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl p-6 shadow-sm flex flex-col items-center justify-center text-center">
+                <div class="p-4 bg-luxury-gold/10 rounded-full mb-4">
+                    <svg class="w-8 h-8 text-luxury-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                </div>
+                <h4 class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">My Orders</h4>
+                <p class="text-3xl font-serif font-bold text-luxury-charcoal">{{ $myOrders->count() }}</p>
+                <a href="#" class="mt-4 text-xs font-bold text-luxury-gold uppercase tracking-widest hover:text-luxury-charcoal transition-colors">View All Orders &rarr;</a>
+            </div>
+            <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl p-6 shadow-sm flex flex-col items-center justify-center text-center">
+                <div class="p-4 bg-luxury-gold/10 rounded-full mb-4">
+                    <svg class="w-8 h-8 text-luxury-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h4 class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">Total Purchases</h4>
+                <p class="text-3xl font-serif font-bold text-luxury-charcoal">Rp {{ number_format($totalPurchases, 0, ',', '.') }}</p>
+                <a href="#" class="mt-4 px-6 py-2 bg-luxury-charcoal text-luxury-gold text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-black transition-colors shadow-md">Browse Catalog</a>
+            </div>
+        </div>
+    @endif
+
     @push('scripts')
+    @if($role === 'admin')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <script>
-        // Kode JavaScript untuk Chart.js (Sudah diatur untuk warna terang sebelumnya)
+        function healthMonitor() {
+            return {
+                dbStatus: 'checking',
+                cacheStatus: 'checking',
+                checkHealth() {
+                    fetch('/health')
+                        .then(res => res.json())
+                        .then(data => {
+                            this.dbStatus = data.database;
+                            this.cacheStatus = data.cache;
+                        })
+                        .catch(() => {
+                            this.dbStatus = 'disconnected';
+                            this.cacheStatus = 'disconnected';
+                        });
+                }
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             const chartDataJson = {!! $chartData ?? '{}' !!};
-            let chartData;
-            try {
-                chartData = typeof chartDataJson === 'string' ? JSON.parse(chartDataJson) : chartDataJson;
-            } catch (e) {
-                console.error("Gagal mem-parse chartData:", e, chartDataJson);
-                chartData = { labels: [], penghasilan: [], jumlah_pesanan: [] };
-            }
+            const chartData = typeof chartDataJson === 'string' ? JSON.parse(chartDataJson) : chartDataJson;
             
-            const currentPeriodDays = {{ $currentPeriodDays ?? 7 }};
-            // ... (sisa JavaScript untuk update judul dan inisialisasi chart tetap sama seperti sebelumnya)
+            // Luxury Color Palette for Charts
+            const gold = '#C8A96B';
+            const charcoal = '#1A1A1A';
+            const gridColor = 'rgba(200, 169, 107, 0.1)';
 
-            window.grafikPenghasilanInstance = null;
-            window.grafikJumlahPesananInstance = null;
-
-            const lightModeTextColor = 'rgba(55, 65, 81, 0.8)'; // slate-700
-            const lightModeGridColor = 'rgba(226, 232, 240, 0.6)'; // slate-300
-
-            function initOrUpdateChart(chartId, chartInstanceVarName, type, label, data, backgroundColor, borderColor, tension = undefined) {
-                const canvas = document.getElementById(chartId);
-                if (!canvas) {
-                    console.error(`Canvas dengan ID "${chartId}" tidak ditemukan.`);
-                    return;
-                }
-                const ctx = canvas.getContext('2d');
-
-                if (window[chartInstanceVarName]) {
-                    window[chartInstanceVarName].destroy();
-                }
+            function createChart(ctxId, type, label, data, color) {
+                const ctx = document.getElementById(ctxId);
+                if(!ctx) return;
                 
-                window[chartInstanceVarName] = new Chart(ctx, {
+                new Chart(ctx.getContext('2d'), {
                     type: type,
                     data: {
                         labels: chartData.labels || [],
                         datasets: [{
                             label: label,
                             data: data || [],
-                            backgroundColor: backgroundColor,
-                            borderColor: borderColor,
-                            borderWidth: 1,
-                            tension: tension
+                            backgroundColor: color === gold ? 'rgba(200, 169, 107, 0.2)' : 'rgba(26, 26, 26, 0.1)',
+                            borderColor: color,
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: type === 'line'
                         }]
                     },
                     options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    stepSize: chartId === 'grafikJumlahPesanan' && (data || []).length > 0 && (data || []).every(val => Number.isInteger(val)) ? 1 : undefined,
-                                    color: lightModeTextColor
-                                },
-                                grid: {
-                                    color: lightModeGridColor
-                                }
-                            },
-                            x: { 
-                                type: 'time',
-                                time: {
-                                    unit: 'day', 
-                                    tooltipFormat: 'dd MMM yy', 
-                                    displayFormats: {
-                                        day: 'dd MMM' 
-                                    }
-                                },
-                                title: {
-                                    display: true,
-                                    text: 'Tanggal',
-                                    color: lightModeTextColor
-                                },
-                                ticks: {
-                                     color: lightModeTextColor
-                                },
-                                grid: {
-                                    color: lightModeGridColor
-                                }
-                            }
-                        },
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
-                            legend: {
-                                labels: {
-                                    color: lightModeTextColor
-                                }
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: { grid: { color: gridColor }, ticks: { color: '#64748b' } },
+                            x: { 
+                                type: 'time', 
+                                time: { unit: 'day' },
+                                grid: { color: gridColor }, 
+                                ticks: { color: '#64748b' } 
                             }
                         }
                     }
                 });
             }
 
-            if (chartData && chartData.labels && chartData.penghasilan && chartData.jumlah_pesanan) {
-                 initOrUpdateChart(
-                    'grafikPenghasilan',
-                    'grafikPenghasilanInstance',
-                    'bar',
-                    'Penghasilan (Rp)',
-                    chartData.penghasilan,
-                    'rgba(54, 162, 235, 0.6)', // Biru soft
-                    'rgba(54, 162, 235, 1)'
-                );
-
-                initOrUpdateChart(
-                    'grafikJumlahPesanan',
-                    'grafikJumlahPesananInstance',
-                    'line',
-                    'Jumlah Pesanan',
-                    chartData.jumlah_pesanan,
-                    'rgba(75, 192, 192, 0.6)', // Teal soft
-                    'rgba(75, 192, 192, 1)',
-                    0.1
-                );
-            } else {
-                console.warn("Data untuk chart tidak lengkap atau tidak valid");
-            }
-
-            const periodSelect = document.getElementById('period_days');
-            if (periodSelect) {
-                periodSelect.addEventListener('change', function() {
-                    this.form.submit();
-                });
+            if (chartData.labels) {
+                createChart('grafikPenghasilan', 'line', 'Revenue', chartData.penghasilan, gold);
+                createChart('grafikJumlahPesanan', 'bar', 'Orders', chartData.jumlah_pesanan, charcoal);
             }
         });
     </script>
+    @endif
     @endpush
 </x-app-layout>

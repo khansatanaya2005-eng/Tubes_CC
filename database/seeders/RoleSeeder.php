@@ -36,7 +36,7 @@ class RoleSeeder extends Seeder
             'nama_lengkap' => 'Pengguna Umum',
             'email' => 'user@tracif.com',
             'password' => bcrypt('password'),
-            'role' => 'user'
+            'role' => 'pelanggan'
         ]);
     }
 }

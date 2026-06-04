@@ -12,7 +12,7 @@ class AuthorizationTest extends TestCase
 
     public function test_user_cannot_access_admin_route()
     {
-        $user = User::factory()->create(['role' => 'user']);
+        $user = User::factory()->create(['role' => 'pelanggan']);
         $response = $this->actingAs($user)->get('/admin/produk');
         $response->assertStatus(403);
     }

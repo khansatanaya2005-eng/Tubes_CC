@@ -20,18 +20,70 @@ class DashboardController extends Controller
             $currentPeriodDays = 7;
         }
 
-        // BI Metrics
+        $role = Auth::user()->role;
+        $adminName = Auth::user()->name;
+
+        // Base metrics for Admin/Kasir
+        $pesananHariIni = 0;
+        $penghasilanHariIni = 0;
+        $transaksiTerbaru = collect();
+
+        // 1. PELANGGAN DASHBOARD (Very Lightweight)
+        if ($role === 'pelanggan') {
+            // Get user's own customer record if exists
+            $pelanggan = Pelanggan::where('nama_pelanggan', $adminName)->first();
+            $myOrders = collect();
+            $totalPurchases = 0;
+            
+            if ($pelanggan) {
+                $myOrders = Penjualan::where('id_pelanggan', $pelanggan->id_pelanggan)
+                                    ->orderBy('waktu_transaksi', 'desc')
+                                    ->take(5)
+                                    ->get();
+                $totalPurchases = Penjualan::where('id_pelanggan', $pelanggan->id_pelanggan)->sum('total_harga_penjualan');
+            }
+
+            return view('admin.dashboard', [
+                'role' => $role,
+                'adminName' => $adminName,
+                'myOrders' => $myOrders,
+                'totalPurchases' => $totalPurchases,
+            ]);
+        }
+
+        // 2. KASIR DASHBOARD (Medium weight)
+        if ($role === 'kasir') {
+            $pesananHariIni = Penjualan::whereDate('waktu_transaksi', Carbon::today())->count();
+            $pesananDiproses = Penjualan::whereDate('waktu_transaksi', Carbon::today())->where('id_admin', Auth::id())->count();
+            $totalCustomers = Pelanggan::count();
+            $transaksiTerbaru = Penjualan::with('pelanggan')
+                                    ->whereDate('waktu_transaksi', Carbon::today())
+                                    ->orderBy('waktu_transaksi', 'desc')
+                                    ->take(10)
+                                    ->get();
+            
+            return view('admin.dashboard', [
+                'role' => $role,
+                'adminName' => $adminName,
+                'pesananHariIni' => $pesananHariIni,
+                'pesananDiproses' => $pesananDiproses,
+                'totalCustomers' => $totalCustomers,
+                'transaksiTerbaru' => $transaksiTerbaru,
+            ]);
+        }
+
+        // 3. ADMIN DASHBOARD (Heavy BI)
         $totalProducts = Produk::count();
         $totalCustomers = Pelanggan::count();
         $totalSalesCount = Penjualan::count();
         $totalRevenue = Penjualan::sum('total_harga_penjualan');
         $monthlyRevenue = Penjualan::whereMonth('waktu_transaksi', Carbon::now()->month)->sum('total_harga_penjualan');
-
-        // Data untuk Kartu Ringkasan (Hari Ini)
+        $monthlyOrders = Penjualan::whereMonth('waktu_transaksi', Carbon::now()->month)->count();
+        
         $penghasilanHariIni = Penjualan::whereDate('waktu_transaksi', Carbon::today())->sum('total_harga_penjualan');
         $pesananHariIni = Penjualan::whereDate('waktu_transaksi', Carbon::today())->count();
 
-        // Data untuk Grafik (berdasarkan periode yang dipilih)
+        // Grafik Logic...
         $startDate = Carbon::now()->subDays($currentPeriodDays - 1)->startOfDay();
         $endDate = Carbon::now()->endOfDay();
 
@@ -45,19 +97,17 @@ class DashboardController extends Controller
             ->orderBy('tanggal', 'asc')
             ->get()
             ->keyBy(function ($item) {
-                return Carbon::parse($item->tanggal)->format('Y-m-d'); // Pastikan key adalah format Y-m-d
+                return Carbon::parse($item->tanggal)->format('Y-m-d');
             });
 
         $labelsGrafik = [];
         $dataPenghasilan = [];
         $dataJumlahPesanan = [];
-        $currentDate = Carbon::now();
 
         for ($i = 0; $i < $currentPeriodDays; $i++) {
-            // Mulai dari tanggal paling lama ke tanggal hari ini
             $tanggalLoop = $startDate->copy()->addDays($i);
-            $formattedDateKey = $tanggalLoop->format('Y-m-d'); // Format kunci Y-m-d
-            $labelsGrafik[] = $formattedDateKey; // Kirim format YYYY-MM-DD untuk Chart.js adapter
+            $formattedDateKey = $tanggalLoop->format('Y-m-d');
+            $labelsGrafik[] = $formattedDateKey;
 
             if (isset($penjualanPerHari[$formattedDateKey])) {
                 $dataPenghasilan[] = $penjualanPerHari[$formattedDateKey]->total_penghasilan;
@@ -74,7 +124,6 @@ class DashboardController extends Controller
             'jumlah_pesanan' => $dataJumlahPesanan,
         ];
 
-        // Data untuk Tabel Transaksi Terbaru
         $transaksiTerbaru = Penjualan::with('pelanggan')
                                     ->orderBy('waktu_transaksi', 'desc')
                                     ->take(5)
@@ -91,12 +140,14 @@ class DashboardController extends Controller
                         ->get();
 
         return view('admin.dashboard', [
-            'adminName' => Auth::user()->name,
+            'role' => $role,
+            'adminName' => $adminName,
             'totalProducts' => $totalProducts,
             'totalCustomers' => $totalCustomers,
             'totalSalesCount' => $totalSalesCount,
             'totalRevenue' => $totalRevenue,
             'monthlyRevenue' => $monthlyRevenue,
+            'monthlyOrders' => $monthlyOrders,
             'penghasilanHariIni' => $penghasilanHariIni,
             'pesananHariIni' => $pesananHariIni,
             'chartData' => json_encode($chartData),

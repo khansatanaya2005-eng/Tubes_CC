@@ -104,6 +104,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Customer Journey (Pelanggan)
+Route::middleware(['auth', 'verified', 'role:pelanggan'])->group(function () {
+    Route::get('/pelanggan/katalog', [App\Http\Controllers\Customer\StoreController::class, 'index'])->name('pelanggan.katalog');
+    Route::post('/pelanggan/cart/add/{produk}', [App\Http\Controllers\Customer\StoreController::class, 'addToCart'])->name('pelanggan.cart.add');
+    Route::post('/pelanggan/cart/checkout', [App\Http\Controllers\Customer\StoreController::class, 'checkout'])->name('pelanggan.cart.checkout');
+    Route::get('/pelanggan/pesanan-saya', [App\Http\Controllers\Customer\StoreController::class, 'orders'])->name('pelanggan.orders');
+});
+
 
 // Baris ini memuat semua rute untuk login, logout, register, dll.
 require __DIR__.'/auth.php';
