@@ -99,7 +99,11 @@ This guide provides a step-by-step procedure to deploy the **TraciF Premium Hosp
 3. **Frontend IP configuration tab**:
    - Click **+ Add a frontend IP configuration**.
    - **Name**: `Frontend-TraciF`
-   - **Public IP address**: Click `Create new` > Name it `IP-LoadBalancer-TraciF` > OK.
+   - **Public IP address**: Click `Create new`.
+     - **Name**: `IP-LoadBalancer-TraciF`
+     - **Availability zone**: `Zone-redundant` *(CRITICAL: Must be zone-redundant to cover VM 1 in Zone 1 and VM 2 in Zone 2)*.
+     - **Routing preference**: `Microsoft network`
+     - Click **OK**.
    - Click **Add**.
 4. **Backend pools tab**:
    - Click **+ Add a backend pool**.
