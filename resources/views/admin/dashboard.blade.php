@@ -21,14 +21,19 @@
         <!-- 4 KPI CARDS -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             
-            <!-- Revenue Today -->
+            <!-- Revenue Today / Processed Orders -->
             <div class="bg-white rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 p-6 flex items-start space-x-4 hover:shadow-[0_8px_30px_-10px_rgba(184,148,91,0.15)] transition-all duration-300">
                 <div class="w-14 h-14 rounded-full bg-luxury-charcoal flex items-center justify-center flex-shrink-0 shadow-inner">
                     <svg class="w-6 h-6 text-luxury-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
                 <div>
-                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Pendapatan Hari Ini</h4>
-                    <p class="text-2xl font-serif font-bold text-luxury-charcoal mb-2">Rp {{ number_format($penghasilanHariIni, 0, ',', '.') }}</p>
+                    @if($role === 'admin')
+                        <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Pendapatan Hari Ini</h4>
+                        <p class="text-2xl font-serif font-bold text-luxury-charcoal mb-2">Rp {{ number_format($penghasilanHariIni ?? 0, 0, ',', '.') }}</p>
+                    @else
+                        <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Pesanan Diproses</h4>
+                        <p class="text-2xl font-serif font-bold text-luxury-charcoal mb-2">{{ $pesananDiproses ?? 0 }}</p>
+                    @endif
                     <div class="flex items-center text-[11px] font-medium">
                         <span class="text-emerald-600 flex items-center"><svg class="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> 12.5%</span>
                         <span class="text-slate-400 ml-1">dari kemarin</span>
@@ -43,7 +48,7 @@
                 </div>
                 <div>
                     <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Pesanan Hari Ini</h4>
-                    <p class="text-2xl font-serif font-bold text-luxury-charcoal mb-2">{{ $pesananHariIni }}</p>
+                    <p class="text-2xl font-serif font-bold text-luxury-charcoal mb-2">{{ $pesananHariIni ?? 0 }}</p>
                     <div class="flex items-center text-[11px] font-medium">
                         <span class="text-emerald-600 flex items-center"><svg class="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> 8.3%</span>
                         <span class="text-slate-400 ml-1">dari kemarin</span>
@@ -51,7 +56,7 @@
                 </div>
             </div>
 
-            <!-- Products Sold (Mock data for display) -->
+            <!-- Products Sold -->
             <div class="bg-white rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 p-6 flex items-start space-x-4 hover:shadow-[0_8px_30px_-10px_rgba(184,148,91,0.15)] transition-all duration-300">
                 <div class="w-14 h-14 rounded-full bg-luxury-charcoal flex items-center justify-center flex-shrink-0 shadow-inner">
                     <svg class="w-6 h-6 text-luxury-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
@@ -73,7 +78,7 @@
                 </div>
                 <div>
                     <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total Pelanggan</h4>
-                    <p class="text-2xl font-serif font-bold text-luxury-charcoal mb-2">{{ $totalCustomers }}</p>
+                    <p class="text-2xl font-serif font-bold text-luxury-charcoal mb-2">{{ $totalCustomers ?? 0 }}</p>
                     <div class="flex items-center text-[11px] font-medium">
                         <span class="text-emerald-600 flex items-center"><svg class="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> 4.2%</span>
                         <span class="text-slate-400 ml-1">dari kemarin</span>
@@ -106,7 +111,7 @@
                     <div class="bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-[10px] font-medium text-slate-600">7 Hari</div>
                 </div>
                 <div class="space-y-4 flex-1">
-                    @forelse($topProducts as $idx => $prod)
+                    @forelse($topProducts ?? [] as $idx => $prod)
                         <div class="flex items-center space-x-3 group">
                             <!-- Placeholder Image / Initial -->
                             <div class="w-10 h-10 rounded-lg bg-luxury-ivory border border-luxury-gold/30 flex items-center justify-center text-luxury-gold font-bold font-serif shadow-sm">

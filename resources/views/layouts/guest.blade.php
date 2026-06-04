@@ -23,7 +23,14 @@
             </div>
             
             <div class="relative z-10 mb-12">
-                <h1 class="text-5xl font-serif font-bold text-luxury-charcoal leading-tight mb-6 tracking-tight">Welcome to TraciF<br><span class="text-3xl font-light opacity-80">Sales Intelligence Platform<br>for Premium Hospitality</span></h1>
+                <h1 class="text-[3.5rem] font-serif font-bold text-luxury-charcoal leading-[1.1] mb-6 tracking-tight">
+                    Welcome to <span class="text-luxury-gold">TraciF.</span><br>
+                    <span class="text-[1.75rem] font-sans font-light text-slate-500 tracking-wide mt-4 block leading-snug">
+                        Premium Fine Dining<br>
+                        Management System.
+                    </span>
+                </h1>
+                <div class="w-16 h-1 bg-luxury-gold rounded-full mt-8"></div>
             </div>
         </div>
 

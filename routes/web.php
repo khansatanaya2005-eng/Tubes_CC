@@ -94,6 +94,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/admin/pesanan/store', [PesananController::class, 'storeOrder'])->name('admin.pesanan.storeOrder');
     });
 
+    // Activity Logs
+    Route::get('/admin/activity-logs', [App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('admin.activitylogs.index');
+
     // Notifikasi
     Route::get('/admin/notifikasi', [NotifikasiController::class, 'index'])->name('admin.notifikasi.index');
     Route::post('/admin/notifikasi/mark-all-as-read', [NotifikasiController::class, 'markAllAsRead'])->name('admin.notifikasi.markAllAsRead');
@@ -104,8 +107,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Customer Journey (Pelanggan)
-Route::middleware(['auth', 'verified', 'role:pelanggan'])->group(function () {
+// Customer Journey (Pelanggan - Fine Dining Table System)
+Route::get('/meja', [App\Http\Controllers\Customer\StoreController::class, 'mejaInput'])->name('pelanggan.meja');
+Route::post('/meja/set', [App\Http\Controllers\Customer\StoreController::class, 'setMeja'])->name('pelanggan.meja.set');
+Route::post('/meja/clear', [App\Http\Controllers\Customer\StoreController::class, 'clearMeja'])->name('pelanggan.meja.clear');
+
+Route::middleware(['web'])->group(function () {
     Route::get('/pelanggan/katalog', [App\Http\Controllers\Customer\StoreController::class, 'index'])->name('pelanggan.katalog');
     Route::post('/pelanggan/cart/add/{produk}', [App\Http\Controllers\Customer\StoreController::class, 'addToCart'])->name('pelanggan.cart.add');
     Route::post('/pelanggan/cart/checkout', [App\Http\Controllers\Customer\StoreController::class, 'checkout'])->name('pelanggan.cart.checkout');
