@@ -13,7 +13,7 @@ A comprehensive review of the enterprise architecture was conducted to ensure co
 
 ### Optimized Student-Friendly Architecture:
 - **Resource Group**: `RG-TRACIF-PROD`
-- **VMs**: 2x `Standard_B1s` (Burstable, free-tier eligible).
+- **VMs**: 2x `Standard_B2ats_v2` (Burstable, free services eligible).
 - **Storage**: Standard SSD/HDD.
 - **Database**: Azure MySQL Flexible Server `Burstable B1ms` (Development Workload).
 
@@ -60,11 +60,11 @@ To prevent accidental credit depletion, Azure Cost Management budgets have been 
 
 | Resource | Unit Cost (Est.) | Qty | Total Monthly (Est.) |
 | :--- | :--- | :--- | :--- |
-| VM (Standard_B1s) | $7.00 | 2 | $14.00 |
+| VM (Standard_B2ats_v2) | $8.61 | 2 | $17.22 |
 | MySQL (B1ms, 20GB) | $17.94 | 1 | $17.94 |
 | Load Balancer | $2.00 | 1 | $2.00 |
 | Public IPs & Net | $2.00 | - | $2.00 |
-| **Total (Worst Case)** | | | **~ $35.94** |
+| **Total (Worst Case)** | | | **~ $39.16** |
 
 *Note: Auto-shutdown and Mode B operations will further reduce this to approximately **$15-$20/month**.*
 

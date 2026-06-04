@@ -46,7 +46,7 @@ This guide provides a step-by-step procedure to deploy the **TraciF Premium Hosp
    - Allow public access from Azure services (for VMs to connect).
 
 ### 2.3 Virtual Machines (VM-APP-01 & VM-APP-02)
-*Cost Optimization: B1s sizes, Standard SSD, Auto-shutdown.*
+*Cost Optimization: B2ats_v2 size (free services eligible), Standard SSD, Auto-shutdown.*
 1. Go to **Virtual Machines** > Create > **Azure virtual machine**.
 2. **Basics tab**:
    - **Project details**: Select `Azure for Students` subscription and `RG-TRACIF-PROD` resource group.
@@ -56,7 +56,7 @@ This guide provides a step-by-step procedure to deploy the **TraciF Premium Hosp
    - **Availability zone**: `Zone 1` (For the second VM, choose `Zone 2`).
    - **Security type**: `Trusted launch virtual machines`
    - **Image**: `Ubuntu Server 22.04 LTS - x64 Gen2`
-   - **Size**: Click "See all sizes" and strictly choose **`Standard_B1s`** *(Do NOT use the default Standard_D2s_v3 as it costs $91.25/month!)*.
+   - **Size**: Click "See all sizes", expand **B-Series v2**, and strictly choose **`Standard_B2ats_v2`** *(Look for the "(free services eligible)" tag to ensure it uses your student credits efficiently. Do NOT use the default Standard_D2s_v3 as it costs $91.25/month!)*.
    - **Authentication type**: `Password`
    - **Username**: `azureuser`
    - **Password**: `TraciF!Admin123`
