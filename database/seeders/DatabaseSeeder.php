@@ -34,10 +34,10 @@ class DatabaseSeeder extends Seeder
 
         // 1. Buat 1 User Admin
         $admin = User::create([
-            'name' => 'Admin CRM',
+            'name' => 'Admin TraciF',
             'username' => 'admin',
             'nama_lengkap' => 'Admin Utama',
-            'email' => 'admin@minicrm.com',
+            'email' => 'admin@tracif.com',
             'password' => Hash::make('password'),
         ]);
         $this->command->info('User Admin telah dibuat!');

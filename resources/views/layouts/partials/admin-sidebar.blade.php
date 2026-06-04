@@ -6,8 +6,8 @@
     {{-- Logo dan Judul Sidebar --}}
     <div class="flex items-center justify-center h-16 border-b border-slate-200 flex-shrink-0 px-4">
         <a href="{{ route('dashboard') }}" class="flex items-center space-x-3">
-            <img src="{{ asset('images/sistracklogo.png') }}" alt="Sistrack Logo" class="h-8 w-auto">
-            <span class="text-lg font-semibold text-slate-700">Sistrack CRM</span>
+            <img src="{{ asset('images/tracif-logo.png') }}" alt="TraciF Logo" class="h-8 w-auto">
+            <span class="text-lg font-semibold text-slate-700">TraciF</span>
         </a>
     </div>
 

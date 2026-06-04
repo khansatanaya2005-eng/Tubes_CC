@@ -5,9 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Sistrack') }}</title>
+        <title>{{ config('app.name', 'TraciF') }}</title>
 
-        <link rel="icon" href="{{ asset('images/sistracklogo.png') }}" type="image/png">
+        <link rel="icon" href="{{ asset('images/tracif-logo.png') }}" type="image/png">
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -18,7 +18,7 @@
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
             <div>
                 <a href="/">
-                    <img src="{{ asset('images/sistracklogo.png') }}" alt="Logo Perusahaan" class="w-32 h-auto">
+                    <img src="{{ asset('images/tracif-logo.png') }}" alt="Logo TraciF" class="w-32 h-auto">
                 </a>
             </div>
 

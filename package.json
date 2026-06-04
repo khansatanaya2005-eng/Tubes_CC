@@ -1,5 +1,7 @@
 {
     "$schema": "https://json.schemastore.org/package.json",
+    "name": "tracif",
+    "description": "TraciF - Cloud-native Sales Management System",
     "private": true,
     "type": "module",
     "scripts": {
