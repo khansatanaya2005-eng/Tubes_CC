@@ -14,25 +14,27 @@
     @stack('styles')
 </head>
 <body class="h-full font-sans antialiased text-luxury-charcoal bg-luxury-ivory overflow-hidden">
-    <div x-data="{ open: false }" class="h-full flex flex-col">
-        <!-- FIXED TOP BAR -->
-        @include('layouts.navigation')
+    <div x-data="{ open: false }" class="flex h-screen overflow-hidden bg-[#F4F2EE]">
+        
+        <!-- FIXED SIDEBAR -->
+        @include('layouts.partials.admin-sidebar')
 
-        <div class="flex flex-1 overflow-hidden">
-            <!-- FIXED SIDEBAR -->
-            @include('layouts.partials.admin-sidebar')
+        <!-- MAIN CONTENT WRAPPER -->
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+            <!-- FIXED TOP BAR -->
+            @include('layouts.navigation')
 
             <!-- SCROLLABLE CONTENT -->
-            <main class="flex-1 overflow-y-auto bg-luxury-ivory p-4 sm:p-8 transition-all duration-300">
+            <main class="flex-1 overflow-y-auto p-6 lg:p-10 transition-all duration-300">
                 @if (isset($header))
-                    <header class="bg-luxury-pearl shadow-sm rounded-xl mb-8 border border-luxury-gold/30">
-                        <div class="max-w-7xl mx-auto py-5 px-6 font-serif text-3xl font-bold text-luxury-charcoal tracking-wide">
+                    <div class="mb-8">
+                        <h1 class="font-serif text-4xl font-bold text-luxury-charcoal tracking-[-0.02em]">
                             {{ $header }}
-                        </div>
-                    </header>
+                        </h1>
+                    </div>
                 @endif
                 
-                <div class="max-w-7xl mx-auto">
+                <div class="max-w-[1440px] mx-auto">
                     {{ $slot }}
                 </div>
             </main>

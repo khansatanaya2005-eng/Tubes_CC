@@ -12,15 +12,15 @@
 
         <!-- Email Address -->
         <div>
-            <label for="email" class="block text-sm font-semibold text-luxury-charcoal mb-2 uppercase tracking-wide">{{ __('Email Address') }}</label>
-            <input id="email" class="block w-full px-4 py-3 bg-transparent border border-luxury-gold/50 rounded-xl focus:border-luxury-gold focus:ring-1 focus:ring-luxury-gold transition duration-200" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+            <label for="email" class="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-widest">{{ __('Email Address') }}</label>
+            <input id="email" class="block w-full h-14 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:border-luxury-gold focus:ring-1 focus:ring-luxury-gold transition duration-200 outline-none text-luxury-charcoal" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2 text-red-500 text-sm" />
         </div>
 
         <!-- Password -->
         <div>
-            <label for="password" class="block text-sm font-semibold text-luxury-charcoal mb-2 uppercase tracking-wide">{{ __('Password') }}</label>
-            <input id="password" class="block w-full px-4 py-3 bg-transparent border border-luxury-gold/50 rounded-xl focus:border-luxury-gold focus:ring-1 focus:ring-luxury-gold transition duration-200" type="password" name="password" required autocomplete="current-password" />
+            <label for="password" class="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-widest">{{ __('Password') }}</label>
+            <input id="password" class="block w-full h-14 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:border-luxury-gold focus:ring-1 focus:ring-luxury-gold transition duration-200 outline-none text-luxury-charcoal" type="password" name="password" required autocomplete="current-password" />
             <x-input-error :messages="$errors->get('password')" class="mt-2 text-red-500 text-sm" />
         </div>
 

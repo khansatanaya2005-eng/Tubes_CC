@@ -14,8 +14,8 @@ export default {
             colors: {
                 luxury: {
                     charcoal: '#1A1A1A',
-                    gold: '#C8A96B',
-                    champagne: '#E5D3A1',
+                    gold: '#B8945B',
+                    champagne: '#D6B97A',
                     ivory: '#F8F6F2',
                     pearl: '#FFFFFF',
                     emerald: '#2E7D32',

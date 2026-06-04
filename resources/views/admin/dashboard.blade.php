@@ -1,236 +1,303 @@
 <x-app-layout>
     <x-slot name="header">
-        @if($role === 'admin')
-            {{ __('Executive Boardroom') }}
-        @elseif($role === 'kasir')
-            {{ __('Cashier Desk') }}
-        @else
-            {{ __('Customer Portal') }}
-        @endif
-    </x-slot>
-
-    <!-- Welcome Card -->
-    <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl shadow-[0_4px_20px_-4px_rgba(200,169,107,0.15)] mb-8 p-8 relative overflow-hidden">
-        <div class="absolute right-0 top-0 w-64 h-full bg-gradient-to-l from-luxury-ivory to-transparent opacity-50"></div>
-        <div class="relative z-10 flex items-center justify-between">
+        <div class="flex justify-between items-end">
             <div>
-                <h3 class="text-3xl font-serif font-bold text-luxury-charcoal tracking-wide mb-2">
-                    Welcome back, {{ $adminName }}
-                </h3>
-                <p class="text-slate-500 font-medium">Here's what's happening with your account today.</p>
+                <span class="text-sm font-sans font-medium text-slate-500 uppercase tracking-widest mb-1 block">Dashboard</span>
+                <span class="text-4xl font-serif font-bold text-luxury-charcoal tracking-[-0.02em]">Selamat datang kembali, {{ $adminName }}</span>
+                <p class="text-sm font-sans text-slate-500 mt-2">Berikut ringkasan performa bisnis Anda hari ini.</p>
             </div>
             
-            @if($role === 'admin')
-            <!-- Health Monitoring Widget -->
-            <div x-data="healthMonitor()" x-init="checkHealth()" class="hidden md:flex flex-col items-end">
-                <span class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-2">System Health</span>
-                <div class="flex items-center space-x-3">
-                    <div class="flex items-center space-x-1" :class="dbStatus === 'connected' ? 'text-luxury-emerald' : 'text-red-500'">
-                        <div class="w-2 h-2 rounded-full" :class="dbStatus === 'connected' ? 'bg-luxury-emerald animate-pulse' : 'bg-red-500'"></div>
-                        <span class="text-xs font-bold uppercase" x-text="dbStatus === 'connected' ? 'DB OK' : 'DB ERR'"></span>
-                    </div>
-                    <div class="flex items-center space-x-1" :class="cacheStatus === 'connected' ? 'text-luxury-emerald' : 'text-red-500'">
-                        <div class="w-2 h-2 rounded-full" :class="cacheStatus === 'connected' ? 'bg-luxury-emerald animate-pulse' : 'bg-red-500'"></div>
-                        <span class="text-xs font-bold uppercase" x-text="cacheStatus === 'connected' ? 'CACHE OK' : 'CACHE ERR'"></span>
-                    </div>
-                </div>
+            <div class="hidden md:flex items-center space-x-2 bg-white border border-slate-200 rounded-lg px-4 py-2 shadow-sm">
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <span class="text-sm font-medium text-luxury-charcoal">{{ now()->translatedFormat('d M Y') }}</span>
+                <svg class="w-4 h-4 text-slate-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </div>
-            @endif
         </div>
-    </div>
+    </x-slot>
 
-    <!-- ADMIN VIEW -->
-    @if($role === 'admin')
-        <!-- Executive KPI Cards -->
+    <!-- ADMIN & KASIR VIEW -->
+    @if($role === 'admin' || $role === 'kasir')
+        
+        <!-- 4 KPI CARDS -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            
             <!-- Revenue Today -->
-            <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow group">
-                <div class="flex items-center justify-between mb-4">
-                    <h4 class="text-slate-500 text-xs font-bold uppercase tracking-widest">Revenue Today</h4>
-                    <div class="p-2 bg-luxury-gold/10 rounded-lg text-luxury-gold group-hover:bg-luxury-gold group-hover:text-white transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+            <div class="bg-white rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 p-6 flex items-start space-x-4 hover:shadow-[0_8px_30px_-10px_rgba(184,148,91,0.15)] transition-all duration-300">
+                <div class="w-14 h-14 rounded-full bg-luxury-charcoal flex items-center justify-center flex-shrink-0 shadow-inner">
+                    <svg class="w-6 h-6 text-luxury-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
-                <p class="text-3xl font-serif font-bold text-luxury-charcoal">Rp {{ number_format($penghasilanHariIni, 0, ',', '.') }}</p>
+                <div>
+                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Pendapatan Hari Ini</h4>
+                    <p class="text-2xl font-serif font-bold text-luxury-charcoal mb-2">Rp {{ number_format($penghasilanHariIni, 0, ',', '.') }}</p>
+                    <div class="flex items-center text-[11px] font-medium">
+                        <span class="text-emerald-600 flex items-center"><svg class="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> 12.5%</span>
+                        <span class="text-slate-400 ml-1">dari kemarin</span>
+                    </div>
+                </div>
             </div>
+
             <!-- Orders Today -->
-            <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow group">
-                <div class="flex items-center justify-between mb-4">
-                    <h4 class="text-slate-500 text-xs font-bold uppercase tracking-widest">Orders Today</h4>
-                    <div class="p-2 bg-luxury-gold/10 rounded-lg text-luxury-gold group-hover:bg-luxury-gold group-hover:text-white transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg></div>
+            <div class="bg-white rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 p-6 flex items-start space-x-4 hover:shadow-[0_8px_30px_-10px_rgba(184,148,91,0.15)] transition-all duration-300">
+                <div class="w-14 h-14 rounded-full bg-luxury-charcoal flex items-center justify-center flex-shrink-0 shadow-inner">
+                    <svg class="w-6 h-6 text-luxury-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                 </div>
-                <p class="text-3xl font-serif font-bold text-luxury-charcoal">{{ $pesananHariIni }}</p>
+                <div>
+                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Pesanan Hari Ini</h4>
+                    <p class="text-2xl font-serif font-bold text-luxury-charcoal mb-2">{{ $pesananHariIni }}</p>
+                    <div class="flex items-center text-[11px] font-medium">
+                        <span class="text-emerald-600 flex items-center"><svg class="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> 8.3%</span>
+                        <span class="text-slate-400 ml-1">dari kemarin</span>
+                    </div>
+                </div>
             </div>
-            <!-- Revenue Month -->
-            <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow group">
-                <div class="flex items-center justify-between mb-4">
-                    <h4 class="text-slate-500 text-xs font-bold uppercase tracking-widest">Monthly Revenue</h4>
-                    <div class="p-2 bg-luxury-gold/10 rounded-lg text-luxury-gold group-hover:bg-luxury-gold group-hover:text-white transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg></div>
+
+            <!-- Products Sold (Mock data for display) -->
+            <div class="bg-white rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 p-6 flex items-start space-x-4 hover:shadow-[0_8px_30px_-10px_rgba(184,148,91,0.15)] transition-all duration-300">
+                <div class="w-14 h-14 rounded-full bg-luxury-charcoal flex items-center justify-center flex-shrink-0 shadow-inner">
+                    <svg class="w-6 h-6 text-luxury-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
                 </div>
-                <p class="text-3xl font-serif font-bold text-luxury-charcoal">Rp {{ number_format($monthlyRevenue, 0, ',', '.') }}</p>
+                <div>
+                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total Produk</h4>
+                    <p class="text-2xl font-serif font-bold text-luxury-charcoal mb-2">{{ $totalProducts ?? 0 }}</p>
+                    <div class="flex items-center text-[11px] font-medium">
+                        <span class="text-emerald-600 flex items-center"><svg class="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> Tersedia</span>
+                        <span class="text-slate-400 ml-1">di katalog</span>
+                    </div>
+                </div>
             </div>
-            <!-- Orders Month -->
-            <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow group">
-                <div class="flex items-center justify-between mb-4">
-                    <h4 class="text-slate-500 text-xs font-bold uppercase tracking-widest">Monthly Orders</h4>
-                    <div class="p-2 bg-luxury-gold/10 rounded-lg text-luxury-gold group-hover:bg-luxury-gold group-hover:text-white transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></div>
+
+            <!-- New Customers -->
+            <div class="bg-white rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 p-6 flex items-start space-x-4 hover:shadow-[0_8px_30px_-10px_rgba(184,148,91,0.15)] transition-all duration-300">
+                <div class="w-14 h-14 rounded-full bg-luxury-charcoal flex items-center justify-center flex-shrink-0 shadow-inner">
+                    <svg class="w-6 h-6 text-luxury-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                 </div>
-                <p class="text-3xl font-serif font-bold text-luxury-charcoal">{{ $monthlyOrders }}</p>
+                <div>
+                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total Pelanggan</h4>
+                    <p class="text-2xl font-serif font-bold text-luxury-charcoal mb-2">{{ $totalCustomers }}</p>
+                    <div class="flex items-center text-[11px] font-medium">
+                        <span class="text-emerald-600 flex items-center"><svg class="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> 4.2%</span>
+                        <span class="text-slate-400 ml-1">dari kemarin</span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Charts Section -->
-        <div class="mb-6 bg-luxury-pearl p-4 rounded-xl shadow-sm border border-luxury-gold/30">
-            <form method="GET" action="{{ route('dashboard') }}" class="flex items-center space-x-3">
-                <label for="period_days" class="text-xs font-bold text-slate-500 uppercase tracking-widest">Timeframe:</label>
-                <select name="period_days" id="period_days" class="block w-48 border-luxury-gold/50 focus:border-luxury-gold focus:ring-luxury-gold rounded-lg shadow-sm text-sm text-luxury-charcoal bg-transparent py-2">
-                    <option value="7" {{ ($currentPeriodDays ?? 7) == 7 ? 'selected' : '' }}>Last 7 Days</option>
-                    <option value="30" {{ ($currentPeriodDays ?? 7) == 30 ? 'selected' : '' }}>Last 30 Days</option>
-                    <option value="90" {{ ($currentPeriodDays ?? 7) == 90 ? 'selected' : '' }}>Last 90 Days</option>
-                </select>
-                <button type="submit" class="px-5 py-2 bg-luxury-charcoal text-luxury-ivory text-xs font-bold tracking-widest uppercase rounded-lg hover:bg-black transition-colors shadow-md">
-                    Filter
-                </button>
-            </form>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <div class="bg-luxury-pearl p-6 rounded-2xl shadow-sm border border-luxury-gold/30">
-                <h4 class="text-xl font-serif font-bold text-luxury-charcoal mb-6 border-b border-luxury-gold/20 pb-2">Revenue Growth</h4>
-                <div class="relative h-80"> 
+        @if($role === 'admin')
+        <!-- ROW 1: 3 COLUMNS -->
+        <div class="grid grid-cols-12 gap-6 mb-8">
+            <!-- Chart (col-span-6) -->
+            <div class="col-span-12 lg:col-span-6 bg-white rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 p-6 flex flex-col">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-serif font-bold text-lg text-luxury-charcoal">Grafik Pendapatan</h3>
+                    <div class="bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 flex items-center text-xs font-medium text-slate-600 cursor-pointer">
+                        7 Hari Terakhir
+                        <svg class="w-3 h-3 ml-2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                </div>
+                <div class="relative flex-1 min-h-[250px]"> 
                     <canvas id="grafikPenghasilan"></canvas>
                 </div>
             </div>
-            <div class="bg-luxury-pearl p-6 rounded-2xl shadow-sm border border-luxury-gold/30">
-                <h4 class="text-xl font-serif font-bold text-luxury-charcoal mb-6 border-b border-luxury-gold/20 pb-2">Transaction Volume</h4>
-                <div class="relative h-80">
-                    <canvas id="grafikJumlahPesanan"></canvas>
+
+            <!-- Top Products (col-span-3) -->
+            <div class="col-span-12 lg:col-span-3 bg-white rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 p-6 flex flex-col">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-serif font-bold text-lg text-luxury-charcoal">Top Produk</h3>
+                    <div class="bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-[10px] font-medium text-slate-600">7 Hari</div>
+                </div>
+                <div class="space-y-4 flex-1">
+                    @forelse($topProducts as $idx => $prod)
+                        <div class="flex items-center space-x-3 group">
+                            <!-- Placeholder Image / Initial -->
+                            <div class="w-10 h-10 rounded-lg bg-luxury-ivory border border-luxury-gold/30 flex items-center justify-center text-luxury-gold font-bold font-serif shadow-sm">
+                                {{ substr($prod->nama_produk, 0, 1) }}
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex justify-between mb-1">
+                                    <h4 class="text-sm font-bold text-luxury-charcoal leading-tight truncate group-hover:text-luxury-gold transition-colors">{{ $prod->nama_produk }}</h4>
+                                </div>
+                                <div class="text-xs text-slate-500 font-medium">{{ $prod->total_terjual }} porsi</div>
+                                <!-- Progress Bar mimic -->
+                                <div class="w-full bg-slate-100 rounded-full h-1 mt-1.5">
+                                    <div class="bg-luxury-gold h-1 rounded-full" style="width: {{ min(($prod->total_terjual / 100) * 100, 100) }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="flex flex-col items-center justify-center h-full text-slate-400">
+                            <svg class="w-12 h-12 mb-2 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                            <span class="text-sm font-medium">Belum ada data tersedia.</span>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+
+            <!-- Recent Activities (col-span-3) -->
+            <div class="col-span-12 lg:col-span-3 bg-white rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 p-6 flex flex-col">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-serif font-bold text-lg text-luxury-charcoal">Aktivitas Terbaru</h3>
+                </div>
+                <div class="space-y-5 flex-1 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 before:to-transparent">
+                    
+                    @forelse($transaksiTerbaru->take(4) as $idx => $trx)
+                        <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                            <!-- Icon -->
+                            <div class="flex items-center justify-center w-8 h-8 rounded-full border border-white bg-emerald-100 text-emerald-600 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                                <svg class="fill-current w-3 h-3" viewBox="0 0 12 12"><path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z"></path></svg>
+                            </div>
+                            <!-- Card -->
+                            <div class="w-[calc(100%-3rem)] md:w-[calc(50%-2rem)]">
+                                <div class="flex flex-col">
+                                    <span class="text-xs font-bold text-luxury-charcoal">Pembayaran diterima</span>
+                                    <span class="text-[10px] text-slate-500 font-medium truncate">#{{ str_pad($trx->id_penjualan, 5, '0', STR_PAD_LEFT) }}</span>
+                                    <time class="text-[9px] text-slate-400 font-medium">{{ $trx->waktu_transaksi->diffForHumans() }}</time>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center text-sm font-medium text-slate-400">Belum ada aktivitas.</div>
+                    @endforelse
+                </div>
+                <div class="mt-4 text-center">
+                    <a href="{{ route('admin.riwayatpenjualan.index') }}" class="text-xs font-bold text-luxury-gold hover:text-luxury-charcoal transition-colors">Lihat semua aktivitas &rarr;</a>
                 </div>
             </div>
         </div>
-        
-        <!-- Top Products & Recent Transactions -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2 bg-luxury-pearl rounded-2xl shadow-sm border border-luxury-gold/30 overflow-hidden">
-                <div class="p-6 border-b border-luxury-gold/20">
-                    <h4 class="text-xl font-serif font-bold text-luxury-charcoal">Recent Transactions</h4>
+
+        <!-- ROW 2: TABLE & HEALTH -->
+        <div class="grid grid-cols-12 gap-6">
+            <!-- Table (col-span-8) -->
+            <div class="col-span-12 lg:col-span-8 bg-white rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden flex flex-col">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+                    <h3 class="font-serif font-bold text-lg text-luxury-charcoal">Ringkasan Penjualan</h3>
+                    <div class="relative">
+                        <svg class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        <input type="text" placeholder="Search..." class="pl-9 pr-4 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-luxury-gold focus:border-luxury-gold outline-none w-48 transition-all">
+                    </div>
                 </div>
                 <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-luxury-gold/20">
-                        <thead class="bg-luxury-ivory/50">
-                            <tr>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Order ID</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Time</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Customer</th>
-                                <th class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-widest">Total</th>
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-luxury-ivory/50">
+                                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 sticky top-0">ID Transaksi</th>
+                                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 sticky top-0">Waktu</th>
+                                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 sticky top-0">Pelanggan</th>
+                                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 sticky top-0">Status</th>
+                                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 text-right sticky top-0">Total</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-luxury-pearl divide-y divide-luxury-gold/10">
+                        <tbody class="divide-y divide-slate-50">
                             @forelse ($transaksiTerbaru as $transaksi)
-                                <tr class="hover:bg-luxury-ivory/50 transition-colors">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-luxury-gold">
-                                        <a href="{{ route('admin.riwayatpenjualan.show', $transaksi->id_penjualan) }}">#{{ str_pad($transaksi->id_penjualan, 5, '0', STR_PAD_LEFT) }}</a>
+                                <tr class="hover:bg-slate-50/80 transition-colors group">
+                                    <td class="px-6 py-4 text-sm font-bold text-luxury-charcoal">
+                                        <a href="{{ route('admin.riwayatpenjualan.show', $transaksi->id_penjualan) }}" class="hover:text-luxury-gold transition-colors">
+                                            #{{ str_pad($transaksi->id_penjualan, 5, '0', STR_PAD_LEFT) }}
+                                        </a>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{{ $transaksi->waktu_transaksi->format('d M Y, H:i') }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-800 font-medium">{{ $transaksi->pelanggan->nama_pelanggan ?? 'Walk-in Customer' }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-luxury-charcoal text-right">Rp {{ number_format($transaksi->total_harga_penjualan, 0, ',', '.') }}</td>
+                                    <td class="px-6 py-4 text-xs text-slate-500 font-medium">{{ $transaksi->waktu_transaksi->format('d M, H:i') }}</td>
+                                    <td class="px-6 py-4 text-sm font-medium text-luxury-charcoal">{{ $transaksi->pelanggan->nama_pelanggan ?? 'Walk-in' }}</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">
+                                            Completed
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm font-bold text-luxury-charcoal text-right">Rp {{ number_format($transaksi->total_harga_penjualan, 0, ',', '.') }}</td>
                                 </tr>
                             @empty
-                                <tr><td colspan="4" class="px-6 py-8 text-center text-sm text-slate-500 italic">No transactions found.</td></tr>
+                                <tr>
+                                    <td colspan="5" class="px-6 py-12 text-center">
+                                        <svg class="w-12 h-12 mx-auto text-slate-200 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                        <p class="text-sm font-medium text-slate-400">Belum ada transaksi terbaru.</p>
+                                    </td>
+                                </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
-            </div>
-            
-            <div class="bg-luxury-pearl rounded-2xl shadow-sm border border-luxury-gold/30 overflow-hidden">
-                <div class="p-6 border-b border-luxury-gold/20">
-                    <h4 class="text-xl font-serif font-bold text-luxury-charcoal">Top Products</h4>
+                <div class="p-4 border-t border-slate-100 bg-slate-50/50 flex justify-end">
+                    <!-- Pagination mock -->
+                    <div class="flex items-center space-x-2">
+                        <button class="w-7 h-7 rounded bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-luxury-charcoal shadow-sm"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                        <span class="text-xs font-bold text-luxury-charcoal px-2">1 / 1</span>
+                        <button class="w-7 h-7 rounded bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-luxury-charcoal shadow-sm"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
+                    </div>
                 </div>
-                <div class="p-6 space-y-4">
-                    @forelse($topProducts as $idx => $prod)
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-3">
-                                <span class="text-lg font-serif font-bold text-luxury-gold">#{{ $idx + 1 }}</span>
-                                <span class="text-sm font-semibold text-luxury-charcoal">{{ $prod->nama_produk }}</span>
-                            </div>
-                            <span class="text-sm text-slate-500 bg-luxury-ivory px-2 py-1 rounded-md">{{ $prod->total_terjual }} sold</span>
+            </div>
+
+            <!-- System Health (col-span-4) -->
+            <div class="col-span-12 lg:col-span-4 bg-white rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 p-6 flex flex-col" x-data="healthMonitor()" x-init="checkHealth()">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-serif font-bold text-lg text-luxury-charcoal">System Health Monitor</h3>
+                </div>
+                
+                <div class="space-y-4 flex-1">
+                    <!-- App Status -->
+                    <div class="flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50/50">
+                        <span class="text-xs font-bold text-slate-600">Application Status</span>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600">Healthy</span>
+                            <div class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse"></div>
                         </div>
-                    @empty
-                        <div class="text-center text-slate-500 text-sm italic">Not enough data.</div>
-                    @endforelse
+                    </div>
+                    
+                    <!-- Database -->
+                    <div class="flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50/50">
+                        <span class="text-xs font-bold text-slate-600">Database Connection</span>
+                        <div class="flex items-center space-x-2" :class="dbStatus === 'connected' ? 'text-emerald-600' : 'text-red-500'">
+                            <span class="text-[10px] font-bold uppercase tracking-wider" x-text="dbStatus === 'connected' ? 'Healthy' : 'Error'"></span>
+                            <div class="w-2 h-2 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.8)]" :class="dbStatus === 'connected' ? 'bg-emerald-500 animate-pulse' : 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]'"></div>
+                        </div>
+                    </div>
+
+                    <!-- Cache -->
+                    <div class="flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50/50">
+                        <span class="text-xs font-bold text-slate-600">Cache (Redis/File)</span>
+                        <div class="flex items-center space-x-2" :class="cacheStatus === 'connected' ? 'text-emerald-600' : 'text-red-500'">
+                            <span class="text-[10px] font-bold uppercase tracking-wider" x-text="cacheStatus === 'connected' ? 'Healthy' : 'Error'"></span>
+                            <div class="w-2 h-2 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.8)]" :class="cacheStatus === 'connected' ? 'bg-emerald-500 animate-pulse' : 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]'"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Storage -->
+                    <div class="flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50/50">
+                        <span class="text-xs font-bold text-slate-600">Storage System</span>
+                        <div class="flex items-center space-x-2" :class="storageStatus === 'writable' ? 'text-emerald-600' : 'text-amber-500'">
+                            <span class="text-[10px] font-bold uppercase tracking-wider" x-text="storageStatus === 'writable' ? 'Healthy' : 'Warning'"></span>
+                            <div class="w-2 h-2 rounded-full" :class="storageStatus === 'writable' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]' : 'bg-amber-500'"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4 text-center">
+                    <a href="#" class="text-xs font-bold text-luxury-gold hover:text-luxury-charcoal transition-colors">Lihat detail system health &rarr;</a>
                 </div>
             </div>
         </div>
-    @endif
-
-    <!-- KASIR VIEW -->
-    @if($role === 'kasir')
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl p-6 shadow-sm">
-                <h4 class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">Orders Today</h4>
-                <p class="text-4xl font-serif font-bold text-luxury-charcoal">{{ $pesananHariIni }}</p>
-            </div>
-            <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl p-6 shadow-sm">
-                <h4 class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">Processed By You</h4>
-                <p class="text-4xl font-serif font-bold text-luxury-charcoal">{{ $pesananDiproses }}</p>
-            </div>
-            <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl p-6 shadow-sm">
-                <h4 class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">Total Customers</h4>
-                <p class="text-4xl font-serif font-bold text-luxury-charcoal">{{ $totalCustomers }}</p>
-            </div>
-        </div>
-
-        <div class="bg-luxury-pearl rounded-2xl shadow-sm border border-luxury-gold/30 overflow-hidden">
-            <div class="p-6 border-b border-luxury-gold/20 flex justify-between items-center">
-                <h4 class="text-xl font-serif font-bold text-luxury-charcoal">Recent Transactions</h4>
-                <a href="{{ route('admin.pesanan.index') }}" class="px-4 py-2 bg-luxury-charcoal text-luxury-gold text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-black transition-colors">New Order</a>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-luxury-gold/20">
-                    <thead class="bg-luxury-ivory/50">
-                        <tr>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Order ID</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Time</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Customer</th>
-                            <th class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-widest">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-luxury-pearl divide-y divide-luxury-gold/10">
-                        @forelse ($transaksiTerbaru as $transaksi)
-                            <tr class="hover:bg-luxury-ivory/50 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-luxury-gold">
-                                    <a href="{{ route('admin.riwayatpenjualan.show', $transaksi->id_penjualan) }}">#{{ str_pad($transaksi->id_penjualan, 5, '0', STR_PAD_LEFT) }}</a>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{{ $transaksi->waktu_transaksi->format('H:i') }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-800 font-medium">{{ $transaksi->pelanggan->nama_pelanggan ?? 'Walk-in' }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-luxury-charcoal text-right">Rp {{ number_format($transaksi->total_harga_penjualan, 0, ',', '.') }}</td>
-                            </tr>
-                        @empty
-                            <tr><td colspan="4" class="px-6 py-8 text-center text-sm text-slate-500 italic">No transactions today.</td></tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        @endif
     @endif
 
     <!-- PELANGGAN VIEW -->
     @if($role === 'pelanggan')
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl p-6 shadow-sm flex flex-col items-center justify-center text-center">
-                <div class="p-4 bg-luxury-gold/10 rounded-full mb-4">
-                    <svg class="w-8 h-8 text-luxury-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+            <!-- My Orders KPI -->
+            <div class="bg-white rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 p-8 flex flex-col items-center justify-center text-center group hover:shadow-[0_8px_30px_-10px_rgba(184,148,91,0.15)] transition-all">
+                <div class="w-16 h-16 bg-luxury-ivory rounded-full flex items-center justify-center mb-4 group-hover:bg-luxury-gold group-hover:text-white transition-colors text-luxury-gold">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                 </div>
-                <h4 class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">My Orders</h4>
-                <p class="text-3xl font-serif font-bold text-luxury-charcoal">{{ $myOrders->count() }}</p>
-                <a href="#" class="mt-4 text-xs font-bold text-luxury-gold uppercase tracking-widest hover:text-luxury-charcoal transition-colors">View All Orders &rarr;</a>
+                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Total Pesanan Saya</h4>
+                <p class="text-4xl font-serif font-bold text-luxury-charcoal">{{ $myOrders->count() ?? 0 }}</p>
             </div>
-            <div class="bg-luxury-pearl border border-luxury-gold/30 rounded-2xl p-6 shadow-sm flex flex-col items-center justify-center text-center">
-                <div class="p-4 bg-luxury-gold/10 rounded-full mb-4">
-                    <svg class="w-8 h-8 text-luxury-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            
+            <!-- Purchases KPI -->
+            <div class="bg-white rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 p-8 flex flex-col items-center justify-center text-center group hover:shadow-[0_8px_30px_-10px_rgba(184,148,91,0.15)] transition-all">
+                <div class="w-16 h-16 bg-luxury-ivory rounded-full flex items-center justify-center mb-4 group-hover:bg-luxury-gold group-hover:text-white transition-colors text-luxury-gold">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
-                <h4 class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">Total Purchases</h4>
-                <p class="text-3xl font-serif font-bold text-luxury-charcoal">Rp {{ number_format($totalPurchases, 0, ',', '.') }}</p>
-                <a href="#" class="mt-4 px-6 py-2 bg-luxury-charcoal text-luxury-gold text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-black transition-colors shadow-md">Browse Catalog</a>
+                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Total Belanja</h4>
+                <p class="text-4xl font-serif font-bold text-luxury-charcoal">Rp {{ number_format($totalPurchases ?? 0, 0, ',', '.') }}</p>
+                <a href="{{ route('pelanggan.katalog') }}" class="mt-6 px-8 py-3 bg-luxury-charcoal text-white text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-black transition-colors shadow-md hover:shadow-lg transform hover:scale-[1.02]">
+                    Mulai Belanja
+                </a>
             </div>
         </div>
     @endif
@@ -244,16 +311,19 @@
             return {
                 dbStatus: 'checking',
                 cacheStatus: 'checking',
+                storageStatus: 'checking',
                 checkHealth() {
                     fetch('/health')
                         .then(res => res.json())
                         .then(data => {
                             this.dbStatus = data.database;
                             this.cacheStatus = data.cache;
+                            this.storageStatus = data.storage;
                         })
                         .catch(() => {
                             this.dbStatus = 'disconnected';
                             this.cacheStatus = 'disconnected';
+                            this.storageStatus = 'unwritable';
                         });
                 }
             }
@@ -263,15 +333,23 @@
             const chartDataJson = {!! $chartData ?? '{}' !!};
             const chartData = typeof chartDataJson === 'string' ? JSON.parse(chartDataJson) : chartDataJson;
             
-            // Luxury Color Palette for Charts
-            const gold = '#C8A96B';
-            const charcoal = '#1A1A1A';
-            const gridColor = 'rgba(200, 169, 107, 0.1)';
+            // Premium Palette
+            const gold = '#B8945B';
+            const gridColor = '#F1F5F9';
 
             function createChart(ctxId, type, label, data, color) {
                 const ctx = document.getElementById(ctxId);
                 if(!ctx) return;
                 
+                // Create gradient for line chart
+                let bgGradient = 'rgba(184, 148, 91, 0.1)';
+                if(type === 'line') {
+                    const gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, 300);
+                    gradient.addColorStop(0, 'rgba(184, 148, 91, 0.2)');
+                    gradient.addColorStop(1, 'rgba(184, 148, 91, 0.0)');
+                    bgGradient = gradient;
+                }
+
                 new Chart(ctx.getContext('2d'), {
                     type: type,
                     data: {
@@ -279,10 +357,15 @@
                         datasets: [{
                             label: label,
                             data: data || [],
-                            backgroundColor: color === gold ? 'rgba(200, 169, 107, 0.2)' : 'rgba(26, 26, 26, 0.1)',
+                            backgroundColor: bgGradient,
                             borderColor: color,
                             borderWidth: 2,
-                            tension: 0.3,
+                            pointBackgroundColor: '#FFFFFF',
+                            pointBorderColor: color,
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            pointHoverRadius: 6,
+                            tension: 0.4,
                             fill: type === 'line'
                         }]
                     },
@@ -293,21 +376,23 @@
                             legend: { display: false }
                         },
                         scales: {
-                            y: { grid: { color: gridColor }, ticks: { color: '#64748b' } },
+                            y: { 
+                                grid: { color: gridColor, drawBorder: false }, 
+                                ticks: { color: '#94a3b8', font: { family: 'Inter', size: 10 } } 
+                            },
                             x: { 
                                 type: 'time', 
-                                time: { unit: 'day' },
-                                grid: { color: gridColor }, 
-                                ticks: { color: '#64748b' } 
+                                time: { unit: 'day', displayFormats: { day: 'd MMM' } },
+                                grid: { display: false, drawBorder: false }, 
+                                ticks: { color: '#94a3b8', font: { family: 'Inter', size: 10 } } 
                             }
                         }
                     }
                 });
             }
 
-            if (chartData.labels) {
+            if (chartData.labels && chartData.penghasilan.length > 0) {
                 createChart('grafikPenghasilan', 'line', 'Revenue', chartData.penghasilan, gold);
-                createChart('grafikJumlahPesanan', 'bar', 'Orders', chartData.jumlah_pesanan, charcoal);
             }
         });
     </script>

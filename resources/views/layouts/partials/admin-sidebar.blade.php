@@ -1,79 +1,84 @@
 <aside 
-    class="w-64 bg-luxury-pearl text-luxury-charcoal flex-shrink-0 flex flex-col h-full border-r border-luxury-gold/20 shadow-xl transition-transform duration-300 ease-in-out z-40 absolute lg:static"
+    class="w-[260px] bg-luxury-charcoal flex-shrink-0 flex flex-col h-screen border-r border-white/5 transition-transform duration-300 ease-in-out z-40 fixed lg:relative"
     :class="{'translate-x-0': open, '-translate-x-full lg:translate-x-0': !open}"
     x-cloak>
 
-    <div class="flex-1 py-6 px-4 space-y-2 overflow-y-auto custom-scrollbar">
-        <!-- Dashboard Link -->
+    <!-- Branding -->
+    <div class="h-[72px] flex items-center px-8 border-b border-white/5 flex-shrink-0">
+        <a href="{{ route('dashboard') }}" class="flex flex-col group">
+            <span class="text-[28px] font-serif font-bold text-luxury-pearl tracking-[-0.03em] leading-none group-hover:text-luxury-gold transition-colors">TraciF</span>
+            <span class="text-[10px] font-sans text-luxury-pearl opacity-60 mt-1 uppercase tracking-widest leading-none">Sales Intelligence</span>
+        </a>
+    </div>
+
+    <!-- Menus -->
+    <div class="flex-1 py-6 px-4 space-y-1 overflow-y-auto scrollbar-hide">
+        <!-- MAIN Section -->
+        <div class="px-4 text-[10px] font-bold text-luxury-gold opacity-80 uppercase tracking-widest mb-3 mt-2">Main</div>
+        
         <a href="{{ route('dashboard') }}"
-           class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('dashboard') ? 'bg-luxury-charcoal text-luxury-gold shadow-md transform scale-[1.02]' : 'text-slate-600 hover:bg-luxury-ivory hover:text-luxury-charcoal hover:pl-5' }}">
-           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-            <span class="font-semibold tracking-wide text-sm">
-                @if(Auth::user()->role === 'admin') Executive Board
-                @elseif(Auth::user()->role === 'kasir') Cashier Desk
-                @else Dashboard Saya @endif
-            </span>
+           class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('dashboard') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
+            <span class="font-medium tracking-wide text-sm">Dashboard</span>
         </a>
 
-        <hr class="border-luxury-gold/20 my-4 w-4/5 mx-auto">
-
         @if(Auth::user()->role === 'admin' || Auth::user()->role === 'kasir')
-            <!-- Admin / Kasir Only -->
-            <div class="px-4 text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 mt-4">POS & Sales</div>
+            <!-- OPERATIONS Section -->
+            <div class="px-4 text-[10px] font-bold text-luxury-gold opacity-80 uppercase tracking-widest mb-3 mt-8">Operations</div>
             
             <a href="{{ route('admin.pesanan.index') }}"
-               class="flex items-center space-x-3 py-2.5 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('admin.pesanan.index') ? 'bg-luxury-charcoal text-luxury-gold shadow-md transform scale-[1.02]' : 'text-slate-600 hover:bg-luxury-ivory hover:text-luxury-charcoal hover:pl-5' }}">
-               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+               class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('admin.pesanan.*') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
                <span class="font-medium tracking-wide text-sm">Create Order</span>
             </a>
 
             <a href="{{ route('admin.riwayatpenjualan.index') }}"
-               class="flex items-center space-x-3 py-2.5 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('admin.riwayatpenjualan.*') ? 'bg-luxury-charcoal text-luxury-gold shadow-md transform scale-[1.02]' : 'text-slate-600 hover:bg-luxury-ivory hover:text-luxury-charcoal hover:pl-5' }}">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+               class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('admin.riwayatpenjualan.*') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
                 <span class="font-medium tracking-wide text-sm">Sales History</span>
             </a>
 
-            <div class="px-4 text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 mt-6">Management</div>
+            <!-- CUSTOMERS Section -->
+            <div class="px-4 text-[10px] font-bold text-luxury-gold opacity-80 uppercase tracking-widest mb-3 mt-8">Customers</div>
             
             <a href="{{ route('admin.pelanggan.index') }}"
-               class="flex items-center space-x-3 py-2.5 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('admin.pelanggan.*') ? 'bg-luxury-charcoal text-luxury-gold shadow-md transform scale-[1.02]' : 'text-slate-600 hover:bg-luxury-ivory hover:text-luxury-charcoal hover:pl-5' }}">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                <span class="font-medium tracking-wide text-sm">Customers</span>
+               class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('admin.pelanggan.*') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
+                <span class="font-medium tracking-wide text-sm">Customer Database</span>
             </a>
 
             @if(Auth::user()->role === 'admin')
+                <!-- SYSTEM Section -->
+                <div class="px-4 text-[10px] font-bold text-luxury-gold opacity-80 uppercase tracking-widest mb-3 mt-8">System</div>
+                
                 <a href="{{ route('admin.produk.index') }}"
-                   class="flex items-center space-x-3 py-2.5 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('admin.produk.*') ? 'bg-luxury-charcoal text-luxury-gold shadow-md transform scale-[1.02]' : 'text-slate-600 hover:bg-luxury-ivory hover:text-luxury-charcoal hover:pl-5' }}">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                   class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('admin.produk.*') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
                     <span class="font-medium tracking-wide text-sm">Products Catalog</span>
                 </a>
                 
-                <div class="px-4 text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 mt-6">System</div>
-                
-                <a href="#" class="flex items-center space-x-3 py-2.5 px-4 rounded-xl transition-all duration-300 text-slate-600 hover:bg-luxury-ivory hover:text-luxury-charcoal hover:pl-5">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                <a href="#" class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 text-white/60 hover:bg-white/5 hover:text-white">
                     <span class="font-medium tracking-wide text-sm">Activity Logs</span>
                 </a>
             @endif
         @else
             <!-- Pelanggan Only -->
-            <div class="px-4 text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 mt-4">Shopping</div>
+            <div class="px-4 text-[10px] font-bold text-luxury-gold opacity-80 uppercase tracking-widest mb-3 mt-8">Shopping</div>
             
-            <a href="{{ route('pelanggan.katalog') }}" class="flex items-center space-x-3 py-2.5 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('pelanggan.katalog') ? 'bg-luxury-charcoal text-luxury-gold shadow-md transform scale-[1.02]' : 'text-slate-600 hover:bg-luxury-ivory hover:text-luxury-charcoal hover:pl-5' }}">
-               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+            <a href="{{ route('pelanggan.katalog') }}" class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('pelanggan.katalog') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
                <span class="font-medium tracking-wide text-sm">Browse Products</span>
             </a>
-            <a href="{{ route('pelanggan.orders') }}" class="flex items-center space-x-3 py-2.5 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('pelanggan.orders') ? 'bg-luxury-charcoal text-luxury-gold shadow-md transform scale-[1.02]' : 'text-slate-600 hover:bg-luxury-ivory hover:text-luxury-charcoal hover:pl-5' }}">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+            <a href="{{ route('pelanggan.orders') }}" class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('pelanggan.orders') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
                 <span class="font-medium tracking-wide text-sm">My Orders</span>
             </a>
         @endif
     </div>
     
-    <!-- Footer Section Sidebar -->
-    <div class="p-4 border-t border-luxury-gold/20 bg-luxury-ivory">
-        <p class="text-xs text-center text-slate-500">
-            &copy; {{ date('Y') }} TraciF Hospitality
-        </p>
+    <!-- Role Badge Footer -->
+    <div class="p-6 border-t border-white/5 bg-black/20">
+        <div class="flex items-center justify-between bg-black/40 p-3 rounded-xl border border-white/10">
+            <div class="flex flex-col">
+                <span class="text-[10px] text-white/50 uppercase tracking-widest">Role Saat Ini</span>
+                <span class="text-sm font-bold text-luxury-gold uppercase tracking-widest mt-1">{{ Auth::user()->role }}</span>
+            </div>
+            <div class="w-8 h-8 rounded-full bg-luxury-gold/20 border border-luxury-gold/30 flex items-center justify-center">
+                <svg class="w-4 h-4 text-luxury-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            </div>
+        </div>
     </div>
 </aside>
