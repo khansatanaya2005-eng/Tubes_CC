@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Penjualan;
+use App\Models\Produk;
+use App\Models\Pelanggan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +19,13 @@ class DashboardController extends Controller
         if (!in_array($currentPeriodDays, [7, 30, 90])) {
             $currentPeriodDays = 7;
         }
+
+        // BI Metrics
+        $totalProducts = Produk::count();
+        $totalCustomers = Pelanggan::count();
+        $totalSalesCount = Penjualan::count();
+        $totalRevenue = Penjualan::sum('total_harga_penjualan');
+        $monthlyRevenue = Penjualan::whereMonth('waktu_transaksi', Carbon::now()->month)->sum('total_harga_penjualan');
 
         // Data untuk Kartu Ringkasan (Hari Ini)
         $penghasilanHariIni = Penjualan::whereDate('waktu_transaksi', Carbon::today())->sum('total_harga_penjualan');
@@ -71,12 +80,29 @@ class DashboardController extends Controller
                                     ->take(5)
                                     ->get();
 
+        $recentCustomers = Pelanggan::orderBy('created_at', 'desc')->take(5)->get();
+
+        $topProducts = DB::table('detail_penjualans')
+                        ->join('produks', 'detail_penjualans.id_produk', '=', 'produks.id_produk')
+                        ->select('produks.nama_produk', DB::raw('SUM(detail_penjualans.jumlah_produk) as total_terjual'))
+                        ->groupBy('produks.id_produk', 'produks.nama_produk')
+                        ->orderBy('total_terjual', 'desc')
+                        ->take(5)
+                        ->get();
+
         return view('admin.dashboard', [
             'adminName' => Auth::user()->name,
+            'totalProducts' => $totalProducts,
+            'totalCustomers' => $totalCustomers,
+            'totalSalesCount' => $totalSalesCount,
+            'totalRevenue' => $totalRevenue,
+            'monthlyRevenue' => $monthlyRevenue,
             'penghasilanHariIni' => $penghasilanHariIni,
             'pesananHariIni' => $pesananHariIni,
             'chartData' => json_encode($chartData),
             'transaksiTerbaru' => $transaksiTerbaru,
+            'recentCustomers' => $recentCustomers,
+            'topProducts' => $topProducts,
             'currentPeriodDays' => $currentPeriodDays,
         ]);
     }

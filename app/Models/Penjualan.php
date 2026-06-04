@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo; // Tambahkan ini
-use Illuminate\Database\Eloquent\Relations\HasMany;  // Tambahkan ini
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Penjualan extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     /**
      * Nama tabel yang terhubung dengan model ini.
@@ -32,6 +34,14 @@ class Penjualan extends Model
         'metode_pembayaran',
         'catatan_penjualan',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logFillable()
+        ->logOnlyDirty()
+        ->dontSubmitEmptyLogs();
+    }
 
     public function admin(): BelongsTo
     {

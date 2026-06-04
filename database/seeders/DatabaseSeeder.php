@@ -32,15 +32,13 @@ class DatabaseSeeder extends Seeder
 
         $this->command->info('Membuat data dummy...');
 
-        // 1. Buat 1 User Admin
-        $admin = User::create([
-            'name' => 'Admin TraciF',
-            'username' => 'admin',
-            'nama_lengkap' => 'Admin Utama',
-            'email' => 'admin@tracif.com',
-            'password' => Hash::make('password'),
+        // 1. Buat Role dan Akun Admin/Kasir/User melalui RoleSeeder
+        $this->call([
+            RoleSeeder::class,
         ]);
-        $this->command->info('User Admin telah dibuat!');
+        
+        $admin = User::where('role', 'admin')->first();
+        $this->command->info('Roles dan Akun telah dibuat!');
 
         // 2. Buat 30 Produk menggunakan factory
         $produks = Produk::factory(30)->create();

@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\PenjualanController;
 use App\Http\Controllers\Admin\PesananController;
 use App\Http\Controllers\Admin\NotifikasiController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,13 +27,40 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+// Health Check Endpoint
+Route::get('/health', function () {
+    try {
+        DB::connection()->getPdo();
+        $db_status = 'connected';
+    } catch (\Exception $e) {
+        $db_status = 'disconnected';
+    }
+
+    try {
+        Cache::store()->get('health_check');
+        $cache_status = 'connected';
+    } catch (\Exception $e) {
+        $cache_status = 'disconnected';
+    }
+
+    $storage_status = is_writable(storage_path()) ? 'writable' : 'unwritable';
+
+    return response()->json([
+        'status' => 'healthy',
+        'database' => $db_status,
+        'cache' => $cache_status,
+        'storage' => $storage_status,
+        'version' => '1.0.0'
+    ]);
+});
+
 // Grup rute untuk admin yang hanya bisa diakses setelah login
 Route::middleware(['auth', 'verified'])->group(function () {
 
     // Dashboard
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // CRUD Pelanggan
+    // CRUD Pelanggan (Admin & Kasir)
     Route::resource('/admin/pelanggan', PelangganController::class)->names([
         'index' => 'admin.pelanggan.index',
         'create' => 'admin.pelanggan.create',
@@ -39,9 +68,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'edit' => 'admin.pelanggan.edit',
         'update' => 'admin.pelanggan.update',
         'destroy' => 'admin.pelanggan.destroy',
-    ])->except(['show']);
+    ])->except(['show'])->middleware('role:admin,kasir');
 
-    // CRUD Produk
+    // CRUD Produk (Admin Only)
     Route::resource('/admin/produk', ProdukController::class)->names([
         'index' => 'admin.produk.index',
         'create' => 'admin.produk.create',
@@ -49,19 +78,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'edit' => 'admin.produk.edit',
         'update' => 'admin.produk.update',
         'destroy' => 'admin.produk.destroy',
-    ])->except(['show']);
+    ])->except(['show'])->middleware('role:admin');
 
-    // Riwayat Penjualan
-    Route::get('/admin/riwayat-penjualan', [PenjualanController::class, 'index'])->name('admin.riwayatpenjualan.index');
-    Route::get('/admin/riwayat-penjualan/{penjualan}', [PenjualanController::class, 'show'])->name('admin.riwayatpenjualan.show');
+    // Riwayat Penjualan (Admin & Kasir)
+    Route::get('/admin/riwayat-penjualan', [PenjualanController::class, 'index'])->name('admin.riwayatpenjualan.index')->middleware('role:admin,kasir');
+    Route::get('/admin/riwayat-penjualan/{penjualan}', [PenjualanController::class, 'show'])->name('admin.riwayatpenjualan.show')->middleware('role:admin,kasir');
 
-    // Fitur Pesanan (POS)
-    Route::get('/admin/pesanan', [PesananController::class, 'index'])->name('admin.pesanan.index');
-    Route::post('/admin/pesanan/add-to-cart/{produk}', [PesananController::class, 'addToCart'])->name('admin.pesanan.addToCart');
-    Route::post('/admin/pesanan/update-cart', [PesananController::class, 'updateCart'])->name('admin.pesanan.updateCart');
-    Route::post('/admin/pesanan/remove-from-cart', [PesananController::class, 'removeFromCart'])->name('admin.pesanan.removeFromCart');
-    Route::post('/admin/pesanan/clear-cart', [PesananController::class, 'clearCart'])->name('admin.pesanan.clearCart');
-    Route::post('/admin/pesanan/store', [PesananController::class, 'storeOrder'])->name('admin.pesanan.storeOrder');
+    // Fitur Pesanan / POS (Admin & Kasir)
+    Route::middleware('role:admin,kasir')->group(function () {
+        Route::get('/admin/pesanan', [PesananController::class, 'index'])->name('admin.pesanan.index');
+        Route::post('/admin/pesanan/add-to-cart/{produk}', [PesananController::class, 'addToCart'])->name('admin.pesanan.addToCart');
+        Route::post('/admin/pesanan/update-cart', [PesananController::class, 'updateCart'])->name('admin.pesanan.updateCart');
+        Route::post('/admin/pesanan/remove-from-cart', [PesananController::class, 'removeFromCart'])->name('admin.pesanan.removeFromCart');
+        Route::post('/admin/pesanan/clear-cart', [PesananController::class, 'clearCart'])->name('admin.pesanan.clearCart');
+        Route::post('/admin/pesanan/store', [PesananController::class, 'storeOrder'])->name('admin.pesanan.storeOrder');
+    });
 
     // Notifikasi
     Route::get('/admin/notifikasi', [NotifikasiController::class, 'index'])->name('admin.notifikasi.index');
