@@ -61,10 +61,10 @@ To prevent accidental credit depletion, Azure Cost Management budgets have been 
 | Resource | Unit Cost (Est.) | Qty | Total Monthly (Est.) |
 | :--- | :--- | :--- | :--- |
 | VM (Standard_B1s) | $7.00 | 2 | $14.00 |
-| MySQL (B1ms, 20GB) | $12.00 | 1 | $12.00 |
+| MySQL (B1ms, 20GB) | $17.94 | 1 | $17.94 |
 | Load Balancer | $2.00 | 1 | $2.00 |
 | Public IPs & Net | $2.00 | - | $2.00 |
-| **Total (Worst Case)** | | | **~ $30.00** |
+| **Total (Worst Case)** | | | **~ $35.94** |
 
 *Note: Auto-shutdown and Mode B operations will further reduce this to approximately **$15-$20/month**.*
 

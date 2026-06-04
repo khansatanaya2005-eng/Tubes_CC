@@ -24,14 +24,25 @@ This guide provides a step-by-step procedure to deploy the **TraciF Premium Hosp
    - Subnets: Create `Subnet-App` (10.0.1.0/24) and `Subnet-DB` (10.0.2.0/24).
 
 ### 2.2 Shared Database (Azure MySQL Flexible Server)
-*Cost Optimization: B1ms compute, minimal storage, no HA.*
+*Cost Optimization: B1ms compute, 20 GiB storage, no HA.*
 1. Go to **Azure Database for MySQL flexible servers** > Create.
-2. **Basics**:
-   - Server name: `tracif-mysql-prod`
-   - Workload type: `Development`
-   - Compute: `Burstable, Standard_B1ms`
-   - Storage: `20 GB`, `7 Days Backup` (No HA, No Geo-Redundancy).
-3. **Networking**:
+2. **Project details**:
+   - **Subscription**: Azure for Students
+   - **Resource group**: `RG-TRACIF-PROD`
+3. **Server details**:
+   - **Server name**: `tracif-mysql-prod`
+   - **Region**: `Southeast Asia`
+   - **Availability zone**: `No preference`
+4. **Authentication**:
+   - **Administrator login**: `adminuser`
+   - **Password**: `TraciF!Secret123`
+5. **Workload details**:
+   - **Workload type**: `Development` (This quickly configures the server for cost savings).
+   - **Compute + storage**: `Burstable, Standard_B1ms`, `20 GiB` storage.
+   - **High availability**: Unchecked / None (Do not enable).
+6. **Backup configuration**:
+   - **Backup redundancy option**: `Locally-redundant` (Ensure Geo-redundancy is unchecked).
+7. **Networking**:
    - Allow public access from Azure services (for VMs to connect).
 
 ### 2.3 Virtual Machines (VM-APP-01 & VM-APP-02)
