@@ -46,18 +46,37 @@ This guide provides a step-by-step procedure to deploy the **TraciF Premium Hosp
    - Allow public access from Azure services (for VMs to connect).
 
 ### 2.3 Virtual Machines (VM-APP-01 & VM-APP-02)
-*Cost Optimization: B1s sizes, Standard HDD/SSD, Auto-shutdown.*
-1. Go to **Virtual Machines** > Create.
-2. **Basics**:
-   - Name: `VM-APP-01`
-   - Region: `Southeast Asia` (Availability Zone 1)
-   - Image: `Ubuntu Server 22.04 LTS`
-   - Size: `Standard_B1s`
-   - Authentication: SSH Public Key or Password.
-3. **Disks**: `Standard SSD` (Avoid Premium SSD).
-4. **Networking**: Select `VNet-TraciF` > `Subnet-App`.
-5. **Management**: **Enable Auto-shutdown** at `22:00` (Timezone: `Asia/Jakarta`).
-6. Repeat steps to create `VM-APP-02` in Availability Zone 2.
+*Cost Optimization: B1s sizes, Standard SSD, Auto-shutdown.*
+1. Go to **Virtual Machines** > Create > **Azure virtual machine**.
+2. **Basics tab**:
+   - **Project details**: Select `Azure for Students` subscription and `RG-TRACIF-PROD` resource group.
+   - **Virtual machine name**: `VM-APP-01`
+   - **Region**: `Southeast Asia`
+   - **Availability options**: `Availability zone`
+   - **Availability zone**: `Zone 1` (For the second VM, choose `Zone 2`).
+   - **Security type**: `Trusted launch virtual machines`
+   - **Image**: `Ubuntu Server 22.04 LTS - x64 Gen2`
+   - **Size**: Click "See all sizes" and strictly choose **`Standard_B1s`** *(Do NOT use the default Standard_D2s_v3 as it costs $91.25/month!)*.
+   - **Authentication type**: `Password`
+   - **Username**: `azureuser`
+   - **Password**: `TraciF!Admin123`
+   - **Public inbound ports**: `Allow selected ports` > Select `SSH (22)` and `HTTP (80)`.
+3. **Disks tab**:
+   - **OS disk size**: `Image default (30 GiB)`
+   - **OS disk type**: Change this to **`Standard SSD (locally-redundant storage)`** *(Do not use the default Premium SSD to save credits)*.
+   - **Delete with VM**: Checked.
+   - **Key management**: `Platform-managed key`.
+4. **Networking tab**:
+   - **Virtual network**: `VNet-TraciF`
+   - **Subnet**: `default (10.0.0.0/24)`
+   - **Public IP**: Create new (leave default).
+   - **NIC network security group**: `Basic`
+   - **Delete NIC when VM is deleted**: Checked.
+   - **Load balancing options**: `None` (We will configure the Load Balancer separately later).
+5. **Management tab**:
+   - **Enable Auto-shutdown**: Checked. Set to `22:00` with Timezone `Asia/Jakarta`.
+6. Click **Review + create** > **Create**. 
+7. **REPEAT** all steps above to create `VM-APP-02` (Make sure to select `Zone 2`).
 
 ### 2.4 Azure Load Balancer
 1. Go to **Load Balancers** > Create.
