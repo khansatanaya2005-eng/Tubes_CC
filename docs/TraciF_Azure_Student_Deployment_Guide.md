@@ -69,8 +69,16 @@ This guide provides a step-by-step procedure to deploy the **TraciF Premium Hosp
 4. **Networking tab**:
    - **Virtual network**: `VNet-TraciF`
    - **Subnet**: `default (10.0.0.0/24)`
-   - **Public IP**: Create new (leave default).
+   - **Public IP**: Click `Create new`.
+     - **Name**: `VM-APP-01-ip`
+     - **SKU**: `Standard` *(Required for Availability Zones)*
+     - **Assignment**: `Static`
+     - **Routing preference**: `Microsoft network`
+     - **Availability zone**: `Zone 1` (Match the VM's zone).
+     - Click **OK**.
    - **NIC network security group**: `Basic`
+   - **Public inbound ports**: `Allow selected ports`
+   - **Select inbound ports**: `SSH (22)` and `HTTP (80)`
    - **Delete NIC when VM is deleted**: Checked.
    - **Load balancing options**: `None` (We will configure the Load Balancer separately later).
 5. **Management tab**:
