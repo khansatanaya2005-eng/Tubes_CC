@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pelanggan; // Pastikan model Pelanggan di-import
+use App\Models\Pelanggan;
 use Illuminate\Http\Request;
+use App\Http\Requests\StorePelangganRequest;
+use App\Http\Requests\UpdatePelangganRequest;
 
 class PelangganController extends Controller
 {
@@ -28,14 +30,9 @@ class PelangganController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePelangganRequest $request)
     {
-        $request->validate([
-            'nama_pelanggan' => 'required|string|max:255',
-            'kontak_pelanggan' => 'nullable|string|max:100', // Bisa juga divalidasi format nomor telepon/email jika perlu
-        ]);
-
-        Pelanggan::create($request->all());
+        Pelanggan::create($request->validated());
 
         return redirect()->route('admin.pelanggan.index')
                          ->with('success', 'Pelanggan berhasil ditambahkan.');
@@ -61,14 +58,9 @@ class PelangganController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Pelanggan $pelanggan) // Route Model Binding
+    public function update(UpdatePelangganRequest $request, Pelanggan $pelanggan) // Route Model Binding
     {
-        $request->validate([
-            'nama_pelanggan' => 'required|string|max:255',
-            'kontak_pelanggan' => 'nullable|string|max:100',
-        ]);
-
-        $pelanggan->update($request->all());
+        $pelanggan->update($request->validated());
 
         return redirect()->route('admin.pelanggan.index')
                          ->with('success', 'Data pelanggan berhasil diperbarui.');

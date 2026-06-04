@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Produk; // Pastikan model Produk di-import
+use App\Models\Produk;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage; // Untuk mengelola file
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StoreProdukRequest;
+use App\Http\Requests\UpdateProdukRequest;
 
 class ProdukController extends Controller
 {
@@ -47,17 +49,9 @@ class ProdukController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProdukRequest $request)
     {
-        $request->validate([
-            'nama_produk' => 'required|string|max:255',
-            'harga_produk' => 'required|numeric|min:0',
-            'foto_produk' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi untuk gambar
-            'deskripsi_produk' => 'nullable|string',
-            'kategori_produk' => 'nullable|string|max:100',
-        ]);
-
-        $data = $request->all();
+        $data = $request->validated();
 
         if ($request->hasFile('foto_produk')) {
             // Simpan file gambar ke public/storage/produk_images
@@ -83,17 +77,9 @@ class ProdukController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Produk $produk)
+    public function update(UpdateProdukRequest $request, Produk $produk)
     {
-        $request->validate([
-            'nama_produk' => 'required|string|max:255',
-            'harga_produk' => 'required|numeric|min:0',
-            'foto_produk' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'deskripsi_produk' => 'nullable|string',
-            'kategori_produk' => 'nullable|string|max:100',
-        ]);
-
-        $data = $request->all();
+        $data = $request->validated();
 
         if ($request->hasFile('foto_produk')) {
             // Hapus foto lama jika ada
