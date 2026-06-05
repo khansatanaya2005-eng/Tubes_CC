@@ -59,7 +59,20 @@ class DatabaseSeeder extends Seeder
                 'id_pelanggan' => $pelanggan?->id_pelanggan,
                 'waktu_transaksi' => fake()->dateTimeBetween('-6 months', 'now'),
                 'metode_pembayaran' => 'CASH',
-                'catatan_penjualan' => fake()->optional()->sentence(),
+                'catatan_penjualan' => rand(0, 100) > 40 ? fake()->randomElement([
+                    'Tolong jangan pakai daun bawang ya.',
+                    'Esnya dipisah ya kak.',
+                    'Gulanya sedikit aja (less sugar).',
+                    'Ayamnya tolong digoreng kering.',
+                    'Minta sambalnya dibanyakin.',
+                    'Minta sedotan 2.',
+                    'Dibungkus aja (takeaway).',
+                    'Saus dimsumnya minta ekstra.',
+                    'Kopinya jangan terlalu manis.',
+                    'Tolong disajikan cepat ya, lagi buru-buru.',
+                    'Minta sendok garpu tambahan.',
+                    'Porsi nasinya tolong dikurangin dikit.'
+                ]) : null,
                 'total_harga_penjualan' => 0, // Akan di-update setelah detail dibuat
             ]);
 

@@ -8,7 +8,7 @@
         
         <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-8 border-b border-slate-100 pb-6">
             <div>
-                <h3 class="text-2xl font-serif font-bold text-luxury-charcoal">Guest Database</h3>
+                <h3 class="text-2xl font-sans font-bold text-luxury-charcoal">Guest Database</h3>
                 <p class="text-sm text-slate-500 mt-1">Manage guest information and contact details.</p>
             </div>
 
@@ -48,7 +48,7 @@
                                 <span class="text-sm text-slate-400">{{ $pelanggans->firstItem() + $index }}</span>
                             </td>
                             <td class="px-6 py-4">
-                                <span class="font-serif font-bold text-luxury-charcoal text-base">{{ $pelanggan->nama_pelanggan }}</span>
+                                <span class="font-sans font-bold text-luxury-charcoal text-base">{{ $pelanggan->nama_pelanggan }}</span>
                             </td>
                             <td class="px-6 py-4">
                                 <span class="text-sm font-medium text-slate-600">{{ $pelanggan->kontak_pelanggan ?? 'No Contact' }}</span>

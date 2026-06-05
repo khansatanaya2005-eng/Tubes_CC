@@ -5,7 +5,7 @@
 
     <div class="bg-white rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 p-8">
         <div class="mb-8 border-b border-slate-100 pb-6">
-            <h4 class="text-2xl font-serif font-bold text-luxury-charcoal">System Activity Log</h4>
+            <h4 class="text-2xl font-sans font-bold text-luxury-charcoal">System Activity Log</h4>
             <p class="text-slate-500 text-sm mt-2">Real-time monitor of restaurant operations, orders, and guest registry events.</p>
         </div>
 

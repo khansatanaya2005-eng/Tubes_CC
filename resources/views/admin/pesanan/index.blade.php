@@ -9,7 +9,7 @@
         <!-- CULINARY MENU -->
         <div class="lg:w-2/3">
             <div class="mb-6">
-                <h3 class="text-xl font-serif font-bold text-luxury-charcoal">Culinary Menu</h3>
+                <h3 class="text-xl font-sans font-bold text-luxury-charcoal">Culinary Menu</h3>
                 <p class="text-sm text-slate-500">Select items to add to the table's order.</p>
             </div>
 
@@ -31,7 +31,7 @@
                     <div class="group relative bg-white border border-slate-100 rounded-2xl p-6 transition-all duration-300 hover:border-luxury-gold hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] flex flex-col justify-between h-full">
                         <div>
                             <p class="text-[10px] font-bold text-luxury-gold uppercase tracking-widest mb-2">{{ $produk->kategori_produk ?? 'Chef Special' }}</p>
-                            <h4 class="text-lg font-serif font-bold text-luxury-charcoal leading-tight mb-2">{{ $produk->nama_produk }}</h4>
+                            <h4 class="text-lg font-sans font-bold text-luxury-charcoal leading-tight mb-2">{{ $produk->nama_produk }}</h4>
                         </div>
                         
                         <div class="mt-6 flex items-center justify-between">
@@ -58,7 +58,7 @@
                 
                 <!-- Receipt Header -->
                 <div class="mb-6 flex flex-col items-center justify-center shrink-0 border-b-2 border-dashed border-slate-200 pb-6">
-                    <h3 class="text-3xl font-serif font-bold text-luxury-charcoal leading-tight">TraciF.</h3>
+                    <h3 class="text-3xl font-playfair font-bold text-luxury-charcoal leading-tight">TraciF.</h3>
                     <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mt-1">Dine-in Ticket</p>
                     
                     @if (!empty($cart))
@@ -112,7 +112,7 @@
                     <div class="mt-6 pt-6 border-t-2 border-dashed border-slate-200 shrink-0">
                         <div class="flex justify-between items-end mb-6">
                             <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Amount</span>
-                            <span class="text-2xl font-serif font-bold text-luxury-charcoal">Rp {{ number_format($totalHargaKeranjang ?? 0, 0, ',', '.') }}</span>
+                            <span class="text-2xl font-sans font-bold text-luxury-charcoal">Rp {{ number_format($totalHargaKeranjang ?? 0, 0, ',', '.') }}</span>
                         </div>
 
                         <form action="{{ route('admin.pesanan.storeOrder') }}" method="POST" class="space-y-4">

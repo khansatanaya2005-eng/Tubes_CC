@@ -10,7 +10,7 @@
 
     <div class="bg-white rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden">
         <div class="p-8 border-b border-slate-100">
-            <h4 class="text-2xl font-serif font-bold text-luxury-charcoal">Your Recent Orders</h4>
+            <h4 class="text-2xl font-sans font-bold text-luxury-charcoal">Your Recent Orders</h4>
             <p class="text-slate-500 text-sm mt-2">Track the culinary creations ordered for your table today.</p>
         </div>
         <div class="overflow-x-auto">
@@ -34,7 +34,7 @@
                             <td class="px-8 py-5 text-sm text-slate-800">
                                 <ul class="space-y-1">
                                     @foreach($transaksi->detailPenjualans as $detail)
-                                        <li class="font-serif"><span class="font-bold text-luxury-charcoal">{{ $detail->jumlah_produk }}x</span> {{ $detail->produk->nama_produk ?? 'Unknown Dish' }}</li>
+                                        <li class="font-sans"><span class="font-bold text-luxury-charcoal">{{ $detail->jumlah_produk }}x</span> {{ $detail->produk->nama_produk ?? 'Unknown Dish' }}</li>
                                     @endforeach
                                 </ul>
                             </td>

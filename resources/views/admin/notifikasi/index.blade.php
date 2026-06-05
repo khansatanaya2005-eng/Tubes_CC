@@ -7,7 +7,7 @@
         <div class="bg-white rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 p-8">
             <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-8 border-b border-slate-100 pb-6">
                 <div>
-                    <h3 class="text-2xl font-serif font-bold text-luxury-charcoal">System Notifications</h3>
+                    <h3 class="text-2xl font-sans font-bold text-luxury-charcoal">System Notifications</h3>
                     <p class="text-sm text-slate-500 mt-1">Alerts, updates, and transaction alerts.</p>
                 </div>
 

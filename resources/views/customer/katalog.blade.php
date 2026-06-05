@@ -16,9 +16,9 @@
         </div>
         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
         <div class="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
-            <span class="text-luxury-gold text-xs font-bold uppercase tracking-[0.3em] mb-3">Welcome to TraciF</span>
-            <h2 class="text-3xl md:text-5xl font-serif font-bold text-white tracking-[-0.02em] leading-tight mb-2">Exquisite Culinary<br>Experience</h2>
-            <p class="text-white/70 text-sm md:text-base max-w-xl">Curated seasonal menus prepared with the finest ingredients by our master chefs.</p>
+            <span class="text-luxury-gold text-xs font-bold uppercase tracking-[0.3em] mb-3">Selamat Datang di TraciF</span>
+            <h2 class="text-3xl md:text-5xl font-sans font-bold text-white tracking-[-0.02em] leading-tight mb-2">Pengalaman Kuliner<br>Istimewa</h2>
+            <p class="text-white/70 text-sm md:text-base max-w-xl">Menu musiman pilihan yang disiapkan dengan bahan-bahan terbaik oleh koki ahli kami.</p>
         </div>
         <div class="absolute top-8 right-8">
             <span class="inline-flex items-center space-x-2 bg-black/40 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full text-white shadow-xl">
@@ -30,7 +30,7 @@
 
     <!-- Menu Grid -->
     <div class="flex items-center justify-between mb-8">
-        <h3 class="text-2xl font-serif font-bold text-luxury-charcoal">Our Selection</h3>
+        <h3 class="text-2xl font-sans font-bold text-luxury-charcoal">Our Selection</h3>
         <div class="h-px flex-1 bg-slate-200 mx-6"></div>
     </div>
 
@@ -41,9 +41,9 @@
                 <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-luxury-gold/10 to-transparent rounded-bl-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                 <div class="mb-8">
-                    <div class="flex items-start justify-between mb-3">
-                        <h3 class="text-2xl font-serif font-bold text-luxury-charcoal group-hover:text-luxury-gold transition-colors duration-300">{{ $produk->nama_produk }}</h3>
-                        <span class="text-lg font-bold text-luxury-gold shrink-0 ml-4">Rp {{ number_format($produk->harga_produk, 0, ',', '.') }}</span>
+                    <div class="flex flex-col mb-3">
+                        <h3 class="text-xl font-sans font-bold text-luxury-charcoal group-hover:text-luxury-gold transition-colors duration-300 mb-1.5 leading-snug">{{ $produk->nama_produk }}</h3>
+                        <span class="text-lg font-bold text-luxury-gold">Rp {{ number_format($produk->harga_produk, 0, ',', '.') }}</span>
                     </div>
                     <div class="w-12 h-0.5 bg-luxury-gold/30 mb-4 group-hover:w-20 transition-all duration-500"></div>
                     <p class="text-slate-500 text-sm leading-relaxed">{{ $produk->deskripsi_produk ?? 'An exquisite culinary creation crafted with the finest seasonal ingredients, offering a symphony of delicate flavors.' }}</p>

@@ -53,11 +53,67 @@ class DashboardController extends Controller
 
         // 2. KASIR DASHBOARD (Medium weight)
         if ($role === 'kasir') {
-            $pesananHariIni = Penjualan::whereDate('waktu_transaksi', Carbon::today())->count();
-            $pesananDiproses = Penjualan::whereDate('waktu_transaksi', Carbon::today())->where('id_admin', Auth::id())->count();
-            $totalCustomers = Pelanggan::count();
+            $filterCategoryVal = null;
+            $filterDateVal = null;
+            $startDate = Carbon::today();
+            $endDate = Carbon::today()->endOfDay();
+            $filterLabel = 'Hari Ini';
+
+            if ($request->has('filter_date') && !empty($request->input('filter_date'))) {
+                // Specific Date Logic
+                $filterDateVal = $request->input('filter_date');
+                try {
+                    $selectedDate = Carbon::parse($filterDateVal);
+                } catch (\Exception $e) {
+                    $selectedDate = Carbon::today();
+                    $filterDateVal = $selectedDate->format('Y-m-d');
+                }
+                $startDate = $selectedDate->copy()->startOfDay();
+                $endDate = $selectedDate->copy()->endOfDay();
+                
+                if ($selectedDate->isToday()) {
+                    $filterLabel = 'Hari Ini (' . $selectedDate->translatedFormat('d M Y') . ')';
+                } elseif ($selectedDate->isYesterday()) {
+                    $filterLabel = 'Kemarin (' . $selectedDate->translatedFormat('d M Y') . ')';
+                } else {
+                    $filterLabel = $selectedDate->translatedFormat('d M Y');
+                }
+            } else {
+                // Category Logic
+                $filterCategoryVal = $request->input('filter', 'today');
+                
+                if ($filterCategoryVal === 'today') {
+                    $startDate = Carbon::today();
+                    $endDate = Carbon::today()->endOfDay();
+                    $filterLabel = 'Hari Ini';
+                } elseif ($filterCategoryVal === 'yesterday') {
+                    $startDate = Carbon::yesterday();
+                    $endDate = Carbon::yesterday()->endOfDay();
+                    $filterLabel = 'Kemarin';
+                } elseif ($filterCategoryVal === 'this_week') {
+                    $startDate = Carbon::now()->startOfWeek();
+                    $endDate = Carbon::now()->endOfWeek();
+                    $filterLabel = 'Minggu Ini';
+                } elseif ($filterCategoryVal === 'this_month') {
+                    $startDate = Carbon::now()->startOfMonth();
+                    $endDate = Carbon::now()->endOfMonth();
+                    $filterLabel = 'Bulan Ini';
+                } elseif ($filterCategoryVal === 'this_year') {
+                    $startDate = Carbon::now()->startOfYear();
+                    $endDate = Carbon::now()->endOfYear();
+                    $filterLabel = 'Tahun Ini';
+                } elseif ($filterCategoryVal === 'all_time') {
+                    $startDate = Carbon::create(2000, 1, 1);
+                    $endDate = Carbon::now()->endOfDay();
+                    $filterLabel = 'Semua Waktu';
+                }
+            }
+
+            $pesananHariIni = Penjualan::whereBetween('waktu_transaksi', [$startDate, $endDate])->count();
+            $pesananDiproses = Penjualan::whereBetween('waktu_transaksi', [$startDate, $endDate])->where('id_admin', Auth::id())->count();
+            $totalCustomers = Pelanggan::count(); // Global
             $transaksiTerbaru = Penjualan::with('pelanggan')
-                                    ->whereDate('waktu_transaksi', Carbon::today())
+                                    ->whereBetween('waktu_transaksi', [$startDate, $endDate])
                                     ->orderBy('waktu_transaksi', 'desc')
                                     ->take(10)
                                     ->get();
@@ -69,6 +125,9 @@ class DashboardController extends Controller
                 'pesananDiproses' => $pesananDiproses,
                 'totalCustomers' => $totalCustomers,
                 'transaksiTerbaru' => $transaksiTerbaru,
+                'filterCategoryVal' => $filterCategoryVal,
+                'filterDateVal' => $filterDateVal,
+                'filterLabel' => $filterLabel,
             ]);
         }
 

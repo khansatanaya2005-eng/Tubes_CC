@@ -13,13 +13,15 @@
 
     <!-- Menus -->
     <div class="flex-1 py-6 px-4 space-y-1 overflow-y-auto scrollbar-hide">
-        <!-- MAIN Section -->
-        <div class="px-4 text-[10px] font-bold text-luxury-gold opacity-80 uppercase tracking-widest mb-3 mt-2">Main</div>
-        
-        <a href="{{ route('dashboard') }}"
-           class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('dashboard') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
-            <span class="font-medium tracking-wide text-sm">Dashboard</span>
-        </a>
+        @if(Auth::user()->role !== 'pelanggan')
+            <!-- MAIN Section -->
+            <div class="px-4 text-[10px] font-bold text-luxury-gold opacity-80 uppercase tracking-widest mb-3 mt-2">Main</div>
+            
+            <a href="{{ route('dashboard') }}"
+               class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('dashboard') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
+                <span class="font-medium tracking-wide text-sm">Dashboard</span>
+            </a>
+        @endif
 
         @if(Auth::user()->role === 'admin' || Auth::user()->role === 'kasir')
             <!-- OPERATIONS Section -->

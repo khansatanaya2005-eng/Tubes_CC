@@ -22,8 +22,9 @@ export default {
                 },
             },
             fontFamily: {
-                sans: ['Inter', ...defaultTheme.fontFamily.sans],
-                serif: ['Playfair Display', ...defaultTheme.fontFamily.serif],
+                sans: ['Poppins', ...defaultTheme.fontFamily.sans],
+                serif: ['Poppins', ...defaultTheme.fontFamily.serif],
+                playfair: ['Playfair Display', ...defaultTheme.fontFamily.serif],
             },
         },
     },
