@@ -50,5 +50,9 @@
             </div>
         </div>
     </div>
+    <!-- Dynamic Server Label for Load Balancer Demo -->
+    <div class="fixed bottom-4 right-6 text-[10px] text-slate-400 font-mono z-50 opacity-50 hover:opacity-100 transition-opacity">
+        Server: {{ gethostname() }}
+    </div>
 </body>
 </html>
