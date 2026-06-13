@@ -111,11 +111,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::get('/meja', [App\Http\Controllers\Customer\StoreController::class, 'mejaInput'])->name('pelanggan.meja');
 Route::post('/meja/set', [App\Http\Controllers\Customer\StoreController::class, 'setMeja'])->name('pelanggan.meja.set');
 Route::post('/meja/clear', [App\Http\Controllers\Customer\StoreController::class, 'clearMeja'])->name('pelanggan.meja.clear');
+Route::get('/pelanggan/qris', [App\Http\Controllers\Customer\StoreController::class, 'qrisPayment'])->name('pelanggan.qris');
 
 Route::middleware(['web'])->group(function () {
     Route::get('/pelanggan/katalog', [App\Http\Controllers\Customer\StoreController::class, 'index'])->name('pelanggan.katalog');
     Route::post('/pelanggan/cart/add/{produk}', [App\Http\Controllers\Customer\StoreController::class, 'addToCart'])->name('pelanggan.cart.add');
-    Route::post('/pelanggan/cart/checkout', [App\Http\Controllers\Customer\StoreController::class, 'checkout'])->name('pelanggan.cart.checkout');
+    Route::post('/pelanggan/qris/pay', [App\Http\Controllers\Customer\StoreController::class, 'qrisPay'])->name('pelanggan.qris.pay');
     Route::get('/pelanggan/pesanan-saya', [App\Http\Controllers\Customer\StoreController::class, 'orders'])->name('pelanggan.orders');
 });
 

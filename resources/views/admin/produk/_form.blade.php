@@ -25,9 +25,23 @@
     
     <div class="w-1/2">
         <label for="kategori_produk" class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-widest">Category</label>
-        <input type="text" name="kategori_produk" id="kategori_produk" placeholder="e.g. Appetizer, Main Course"
-               value="{{ old('kategori_produk', $produk->kategori_produk ?? '') }}"
-               class="w-full h-14 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:border-luxury-gold focus:ring-1 focus:ring-luxury-gold transition duration-200 outline-none text-luxury-charcoal">
+        <select name="kategori_produk" id="kategori_produk"
+               class="w-full h-14 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:border-luxury-gold focus:ring-1 focus:ring-luxury-gold transition duration-200 outline-none text-luxury-charcoal appearance-none cursor-pointer">
+            <option value="" disabled {{ old('kategori_produk', $produk->kategori_produk ?? '') == '' ? 'selected' : '' }}>Select Category</option>
+            <optgroup label="Makanan">
+                <option value="Main Course" {{ old('kategori_produk', $produk->kategori_produk ?? '') == 'Main Course' ? 'selected' : '' }}>Main Course</option>
+                <option value="Dessert" {{ old('kategori_produk', $produk->kategori_produk ?? '') == 'Dessert' ? 'selected' : '' }}>Dessert</option>
+                <option value="Snack" {{ old('kategori_produk', $produk->kategori_produk ?? '') == 'Snack' ? 'selected' : '' }}>Snack</option>
+                <option value="Appetizer" {{ old('kategori_produk', $produk->kategori_produk ?? '') == 'Appetizer' ? 'selected' : '' }}>Appetizer</option>
+            </optgroup>
+            <optgroup label="Minuman">
+                <option value="Coffee" {{ old('kategori_produk', $produk->kategori_produk ?? '') == 'Coffee' ? 'selected' : '' }}>Coffee</option>
+                <option value="Non Coffee" {{ old('kategori_produk', $produk->kategori_produk ?? '') == 'Non Coffee' ? 'selected' : '' }}>Non Coffee</option>
+                <option value="Tea" {{ old('kategori_produk', $produk->kategori_produk ?? '') == 'Tea' ? 'selected' : '' }}>Tea</option>
+                <option value="Signature" {{ old('kategori_produk', $produk->kategori_produk ?? '') == 'Signature' ? 'selected' : '' }}>Signature</option>
+                <option value="Mocktails" {{ old('kategori_produk', $produk->kategori_produk ?? '') == 'Mocktails' ? 'selected' : '' }}>Mocktails</option>
+            </optgroup>
+        </select>
         @error('kategori_produk')
             <p class="mt-2 text-xs text-red-500 font-medium">{{ $message }}</p>
         @enderror

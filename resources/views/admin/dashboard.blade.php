@@ -3,7 +3,7 @@
         <div class="flex justify-between items-end">
             <div>
                 @if($role === 'pelanggan')
-                    <span class="text-sm font-sans font-medium text-slate-500 uppercase tracking-widest mb-1 block">Customer Portal</span>
+                    <span class="text-sm font-sans font-medium text-slate-500 uppercase tracking-widest mb-1 block">Portal Pelanggan</span>
                     <span class="text-4xl font-sans font-bold text-luxury-charcoal tracking-[-0.02em]">Selamat datang kembali, Pelanggan</span>
                     <p class="text-sm font-sans text-slate-500 mt-2">Berikut adalah ringkasan pesanan dan riwayat transaksi Anda.</p>
                 @else
@@ -214,7 +214,7 @@
                     <h3 class="font-sans font-bold text-lg text-luxury-charcoal">Ringkasan Penjualan</h3>
                     <div class="relative">
                         <svg class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        <input type="text" placeholder="Search..." class="pl-9 pr-4 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-luxury-gold focus:border-luxury-gold outline-none w-48 transition-all">
+                        <input type="text" placeholder="Cari..." class="pl-9 pr-4 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-luxury-gold focus:border-luxury-gold outline-none w-48 transition-all">
                     </div>
                 </div>
                 <div class="overflow-x-auto">
@@ -239,9 +239,7 @@
                                     <td class="px-6 py-4 text-xs text-slate-500 font-medium">{{ $transaksi->waktu_transaksi->format('d M, H:i') }}</td>
                                     <td class="px-6 py-4 text-sm font-medium text-luxury-charcoal">{{ $transaksi->pelanggan->nama_pelanggan ?? 'Walk-in' }}</td>
                                     <td class="px-6 py-4">
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">
-                                            Completed
-                                        </span>
+                                            Selesai
                                     </td>
                                     <td class="px-6 py-4 text-sm font-bold text-luxury-charcoal text-right">Rp {{ number_format($transaksi->total_harga_penjualan, 0, ',', '.') }}</td>
                                 </tr>
@@ -269,24 +267,24 @@
             <!-- System Health (col-span-4) -->
             <div class="col-span-12 lg:col-span-4 bg-white rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 p-6 flex flex-col" x-data="healthMonitor()" x-init="checkHealth()">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-sans font-bold text-lg text-luxury-charcoal">System Health Monitor</h3>
+                    <h3 class="font-sans font-bold text-lg text-luxury-charcoal">Monitor Kesehatan Sistem</h3>
                 </div>
                 
                 <div class="space-y-4 flex-1">
                     <!-- App Status -->
                     <div class="flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50/50">
-                        <span class="text-xs font-bold text-slate-600">Application Status</span>
+                        <span class="text-xs font-bold text-slate-600">Status Aplikasi</span>
                         <div class="flex items-center space-x-2">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600">Healthy</span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600">Sehat</span>
                             <div class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse"></div>
                         </div>
                     </div>
                     
                     <!-- Database -->
                     <div class="flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50/50">
-                        <span class="text-xs font-bold text-slate-600">Database Connection</span>
+                        <span class="text-xs font-bold text-slate-600">Koneksi Database</span>
                         <div class="flex items-center space-x-2" :class="dbStatus === 'connected' ? 'text-emerald-600' : 'text-red-500'">
-                            <span class="text-[10px] font-bold uppercase tracking-wider" x-text="dbStatus === 'connected' ? 'Healthy' : 'Error'"></span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider" x-text="dbStatus === 'connected' ? 'Sehat' : 'Eror'"></span>
                             <div class="w-2 h-2 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.8)]" :class="dbStatus === 'connected' ? 'bg-emerald-500 animate-pulse' : 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]'"></div>
                         </div>
                     </div>
@@ -295,23 +293,23 @@
                     <div class="flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50/50">
                         <span class="text-xs font-bold text-slate-600">Cache (Redis/File)</span>
                         <div class="flex items-center space-x-2" :class="cacheStatus === 'connected' ? 'text-emerald-600' : 'text-red-500'">
-                            <span class="text-[10px] font-bold uppercase tracking-wider" x-text="cacheStatus === 'connected' ? 'Healthy' : 'Error'"></span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider" x-text="cacheStatus === 'connected' ? 'Sehat' : 'Eror'"></span>
                             <div class="w-2 h-2 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.8)]" :class="cacheStatus === 'connected' ? 'bg-emerald-500 animate-pulse' : 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]'"></div>
                         </div>
                     </div>
                     
                     <!-- Storage -->
                     <div class="flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50/50">
-                        <span class="text-xs font-bold text-slate-600">Storage System</span>
+                        <span class="text-xs font-bold text-slate-600">Sistem Penyimpanan</span>
                         <div class="flex items-center space-x-2" :class="storageStatus === 'writable' ? 'text-emerald-600' : 'text-amber-500'">
-                            <span class="text-[10px] font-bold uppercase tracking-wider" x-text="storageStatus === 'writable' ? 'Healthy' : 'Warning'"></span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider" x-text="storageStatus === 'writable' ? 'Sehat' : 'Peringatan'"></span>
                             <div class="w-2 h-2 rounded-full" :class="storageStatus === 'writable' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]' : 'bg-amber-500'"></div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="mt-4 text-center">
-                    <a href="#" class="text-xs font-bold text-luxury-gold hover:text-luxury-charcoal transition-colors">Lihat detail system health &rarr;</a>
+                    <a href="#" class="text-xs font-bold text-luxury-gold hover:text-luxury-charcoal transition-colors">Lihat detail kesehatan sistem &rarr;</a>
                 </div>
             </div>
         </div>

@@ -50,6 +50,10 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        if ($user->role === 'pelanggan') {
+            return redirect(route('pelanggan.meja', absolute: false));
+        }
+
         return redirect(route('dashboard', absolute: false));
     }
 }

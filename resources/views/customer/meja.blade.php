@@ -34,11 +34,20 @@
             @endif
 
             <div>
-                <label for="nomor_meja" class="block text-xs font-bold text-luxury-champagne mb-3 uppercase tracking-widest text-center">Enter Table Number</label>
+                <label for="nama_pelanggan" class="block text-xs font-bold text-luxury-champagne mb-3 uppercase tracking-widest text-center">Nama Anda</label>
+                <input id="nama_pelanggan" type="text" name="nama_pelanggan" 
+                    class="block w-full h-14 text-center text-xl font-sans font-medium bg-white/5 border border-white/10 rounded-2xl focus:border-luxury-gold focus:ring-1 focus:ring-luxury-gold transition duration-200 outline-none text-white placeholder-white/20 mb-4" 
+                    placeholder="Contoh: John Doe" 
+                    required autofocus autocomplete="off" />
+                <x-input-error :messages="$errors->get('nama_pelanggan')" class="mt-2 text-red-400 text-sm text-center" />
+            </div>
+
+            <div>
+                <label for="nomor_meja" class="block text-xs font-bold text-luxury-champagne mb-3 uppercase tracking-widest text-center">Nomor Meja</label>
                 <input id="nomor_meja" type="text" name="nomor_meja" 
                     class="block w-full h-16 text-center text-3xl font-sans font-bold bg-white/5 border border-white/10 rounded-2xl focus:border-luxury-gold focus:ring-1 focus:ring-luxury-gold transition duration-200 outline-none text-white placeholder-white/20" 
-                    placeholder="e.g. 08" 
-                    required autofocus autocomplete="off" />
+                    placeholder="Contoh: 08" 
+                    required autocomplete="off" />
                 <x-input-error :messages="$errors->get('nomor_meja')" class="mt-2 text-red-400 text-sm text-center" />
             </div>
 

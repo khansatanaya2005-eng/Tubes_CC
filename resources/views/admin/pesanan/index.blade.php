@@ -1,7 +1,7 @@
 {{-- resources/views/admin/pesanan/index.blade.php --}}
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Dine-in Orders') }}
+        {{ __('Pesanan Dine-in') }}
     </x-slot>
 
     <div class="flex flex-col lg:flex-row gap-8">
@@ -9,8 +9,8 @@
         <!-- CULINARY MENU -->
         <div class="lg:w-2/3">
             <div class="mb-6">
-                <h3 class="text-xl font-sans font-bold text-luxury-charcoal">Culinary Menu</h3>
-                <p class="text-sm text-slate-500">Select items to add to the table's order.</p>
+                <h3 class="text-xl font-sans font-bold text-luxury-charcoal">Menu Kuliner</h3>
+                <p class="text-sm text-slate-500">Pilih item untuk ditambahkan ke pesanan meja.</p>
             </div>
 
             @if (session('success'))
@@ -30,7 +30,7 @@
                 @forelse ($produks as $produk)
                     <div class="group relative bg-white border border-slate-100 rounded-2xl p-6 transition-all duration-300 hover:border-luxury-gold hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] flex flex-col justify-between h-full">
                         <div>
-                            <p class="text-[10px] font-bold text-luxury-gold uppercase tracking-widest mb-2">{{ $produk->kategori_produk ?? 'Chef Special' }}</p>
+                            <p class="text-[10px] font-bold text-luxury-gold uppercase tracking-widest mb-2">{{ $produk->kategori_produk ?? 'Spesial Chef' }}</p>
                             <h4 class="text-lg font-sans font-bold text-luxury-charcoal leading-tight mb-2">{{ $produk->nama_produk }}</h4>
                         </div>
                         
@@ -46,7 +46,7 @@
                     </div>
                 @empty
                     <div class="col-span-full py-12 text-center bg-white rounded-[20px] border border-slate-100">
-                        <p class="text-slate-500 font-medium">No culinary items available.</p>
+                        <p class="text-slate-500 font-medium">Tidak ada item kuliner tersedia.</p>
                     </div>
                 @endforelse
             </div>
@@ -59,12 +59,12 @@
                 <!-- Receipt Header -->
                 <div class="mb-6 flex flex-col items-center justify-center shrink-0 border-b-2 border-dashed border-slate-200 pb-6">
                     <h3 class="text-3xl font-playfair font-bold text-luxury-charcoal leading-tight">TraciF.</h3>
-                    <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mt-1">Dine-in Ticket</p>
+                    <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mt-1">Tiket Pesanan</p>
                     
                     @if (!empty($cart))
                         <form action="{{ route('admin.pesanan.clearCart') }}" method="POST" class="absolute top-8 right-8">
                             @csrf
-                            <button type="submit" class="text-slate-300 hover:text-red-500 transition-colors" title="Void Ticket">
+                            <button type="submit" class="text-slate-300 hover:text-red-500 transition-colors" title="Batalkan Tiket">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                             </button>
                         </form>
@@ -102,7 +102,7 @@
                     @empty
                         <div class="h-full flex flex-col items-center justify-center text-center text-slate-400">
                             <svg class="w-12 h-12 mb-4 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                            <p class="text-xs font-bold uppercase tracking-widest">Ticket is empty</p>
+                            <p class="text-xs font-bold uppercase tracking-widest">Tiket kosong</p>
                         </div>
                     @endforelse
                 </div>
@@ -111,20 +111,20 @@
                 @if (!empty($cart))
                     <div class="mt-6 pt-6 border-t-2 border-dashed border-slate-200 shrink-0">
                         <div class="flex justify-between items-end mb-6">
-                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Amount</span>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Harga</span>
                             <span class="text-2xl font-sans font-bold text-luxury-charcoal">Rp {{ number_format($totalHargaKeranjang ?? 0, 0, ',', '.') }}</span>
                         </div>
 
                         <form action="{{ route('admin.pesanan.storeOrder') }}" method="POST" class="space-y-4">
                             @csrf
                             <div>
-                                <input type="text" name="nama_pelanggan" placeholder="Guest Name / Table No." class="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:border-luxury-gold focus:ring-1 focus:ring-luxury-gold transition duration-200 outline-none text-luxury-charcoal placeholder-slate-400 text-sm font-medium">
+                                <input type="text" name="nama_pelanggan" placeholder="Nama Tamu / No. Meja" class="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:border-luxury-gold focus:ring-1 focus:ring-luxury-gold transition duration-200 outline-none text-luxury-charcoal placeholder-slate-400 text-sm font-medium">
                             </div>
                             <div>
-                                <textarea name="catatan_penjualan" rows="2" placeholder="Special requests or allergies..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-luxury-gold focus:ring-1 focus:ring-luxury-gold transition duration-200 outline-none text-luxury-charcoal placeholder-slate-400 text-sm font-medium resize-none"></textarea>
+                                <textarea name="catatan_penjualan" rows="2" placeholder="Permintaan khusus atau alergi..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-luxury-gold focus:ring-1 focus:ring-luxury-gold transition duration-200 outline-none text-luxury-charcoal placeholder-slate-400 text-sm font-medium resize-none"></textarea>
                             </div>
                             <button type="submit" class="w-full h-14 bg-luxury-charcoal text-white font-bold uppercase tracking-widest text-xs rounded-xl hover:bg-black transition-colors shadow-lg mt-2">
-                                Complete Order
+                                Selesaikan Pesanan
                             </button>
                         </form>
                     </div>

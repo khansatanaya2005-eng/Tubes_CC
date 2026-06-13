@@ -7,7 +7,7 @@
     <div class="h-[72px] flex items-center px-8 border-b border-white/5 flex-shrink-0">
         <a href="{{ route('dashboard') }}" class="flex flex-col group">
             <span class="text-[28px] font-serif font-bold text-luxury-pearl tracking-[-0.03em] leading-none group-hover:text-luxury-gold transition-colors">TraciF</span>
-            <span class="text-[10px] font-sans text-luxury-pearl opacity-60 mt-1 uppercase tracking-widest leading-none">Sales Intelligence</span>
+            <span class="text-[10px] font-sans text-luxury-pearl opacity-60 mt-1 uppercase tracking-widest leading-none">Fine Dining System</span>
         </a>
     </div>
 
@@ -15,7 +15,7 @@
     <div class="flex-1 py-6 px-4 space-y-1 overflow-y-auto scrollbar-hide">
         @if(Auth::user()->role !== 'pelanggan')
             <!-- MAIN Section -->
-            <div class="px-4 text-[10px] font-bold text-luxury-gold opacity-80 uppercase tracking-widest mb-3 mt-2">Main</div>
+            <div class="px-4 text-[10px] font-bold text-luxury-gold opacity-80 uppercase tracking-widest mb-3 mt-2">Utama</div>
             
             <a href="{{ route('dashboard') }}"
                class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('dashboard') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
@@ -25,52 +25,52 @@
 
         @if(Auth::user()->role === 'admin' || Auth::user()->role === 'kasir')
             <!-- OPERATIONS Section -->
-            <div class="px-4 text-[10px] font-bold text-luxury-gold opacity-80 uppercase tracking-widest mb-3 mt-8">Operations</div>
+            <div class="px-4 text-[10px] font-bold text-luxury-gold opacity-80 uppercase tracking-widest mb-3 mt-8">Operasional</div>
             
             <a href="{{ route('admin.pesanan.index') }}"
                class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('admin.pesanan.*') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
-               <span class="font-medium tracking-wide text-sm">Create Order</span>
+               <span class="font-medium tracking-wide text-sm">Buat Pesanan</span>
             </a>
 
             <a href="{{ route('admin.riwayatpenjualan.index') }}"
                class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('admin.riwayatpenjualan.*') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
-                <span class="font-medium tracking-wide text-sm">Sales History</span>
+                <span class="font-medium tracking-wide text-sm">Riwayat Penjualan</span>
             </a>
 
             <!-- CUSTOMERS Section -->
-            <div class="px-4 text-[10px] font-bold text-luxury-gold opacity-80 uppercase tracking-widest mb-3 mt-8">Customers</div>
+            <div class="px-4 text-[10px] font-bold text-luxury-gold opacity-80 uppercase tracking-widest mb-3 mt-8">Pelanggan</div>
             
             <a href="{{ route('admin.pelanggan.index') }}"
                class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('admin.pelanggan.*') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
-                <span class="font-medium tracking-wide text-sm">Customer Database</span>
+                <span class="font-medium tracking-wide text-sm">Basis Data Pelanggan</span>
             </a>
 
             @if(Auth::user()->role === 'admin')
                 <!-- SYSTEM Section -->
-                <div class="px-4 text-[10px] font-bold text-luxury-gold opacity-80 uppercase tracking-widest mb-3 mt-8">System</div>
+                <div class="px-4 text-[10px] font-bold text-luxury-gold opacity-80 uppercase tracking-widest mb-3 mt-8">Sistem</div>
                 
                 <a href="{{ route('admin.produk.index') }}"
                    class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('admin.produk.*') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
-                    <span class="font-medium tracking-wide text-sm">Products Catalog</span>
+                    <span class="font-medium tracking-wide text-sm">Katalog Produk</span>
                 </a>
                 
                 <a href="{{ route('admin.notifikasi.index') }}" class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('admin.notifikasi.*') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
-                    <span class="font-medium tracking-wide text-sm">System Notifications</span>
+                    <span class="font-medium tracking-wide text-sm">Notifikasi Sistem</span>
                 </a>
 
                 <a href="{{ route('admin.activitylogs.index') }}" class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('admin.activitylogs.*') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
-                    <span class="font-medium tracking-wide text-sm">Activity Logs</span>
+                    <span class="font-medium tracking-wide text-sm">Log Aktivitas</span>
                 </a>
             @endif
         @else
             <!-- Pelanggan Only -->
-            <div class="px-4 text-[10px] font-bold text-luxury-gold opacity-80 uppercase tracking-widest mb-3 mt-8">Shopping</div>
+            <div class="px-4 text-[10px] font-bold text-luxury-gold opacity-80 uppercase tracking-widest mb-3 mt-8">Belanja</div>
             
             <a href="{{ route('pelanggan.katalog') }}" class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('pelanggan.katalog') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
-               <span class="font-medium tracking-wide text-sm">Browse Products</span>
+               <span class="font-medium tracking-wide text-sm">Lihat Menu</span>
             </a>
             <a href="{{ route('pelanggan.orders') }}" class="flex items-center space-x-3 py-3 px-4 rounded-xl transition-all duration-300 {{ request()->routeIs('pelanggan.orders') ? 'bg-luxury-gold text-white shadow-md' : 'text-white/60 hover:bg-white/5 hover:text-white' }}">
-                <span class="font-medium tracking-wide text-sm">My Orders</span>
+                <span class="font-medium tracking-wide text-sm">Pesanan Saya</span>
             </a>
         @endif
     </div>
