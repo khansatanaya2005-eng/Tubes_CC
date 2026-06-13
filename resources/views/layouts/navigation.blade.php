@@ -19,6 +19,12 @@
         <!-- Right Side: Profile & Actions -->
         <div class="flex items-center space-x-2 sm:space-x-4">
             
+            <!-- Dynamic Server Badge -->
+            <div class="hidden md:flex items-center justify-center px-3 py-1 bg-slate-100 rounded-full border border-slate-200" title="Active Server Node">
+                <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2 animate-pulse"></div>
+                <span class="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest">{{ gethostname() }}</span>
+            </div>
+
             <!-- Notifications -->
             <a href="{{ route('admin.notifikasi.index') }}" class="relative p-2.5 rounded-full text-slate-500 hover:text-luxury-gold hover:bg-slate-100 transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
