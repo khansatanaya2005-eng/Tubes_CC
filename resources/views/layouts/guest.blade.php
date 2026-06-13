@@ -50,9 +50,10 @@
             </div>
         </div>
     </div>
-    <!-- Dynamic Server Label for Load Balancer Demo -->
-    <div class="fixed bottom-4 right-6 text-[10px] text-slate-400 font-mono z-50 opacity-50 hover:opacity-100 transition-opacity">
-        Server: {{ gethostname() }}
+    <!-- Dynamic Server Label for Load Balancer Demo (Pill Style) -->
+    <div class="fixed top-6 right-8 z-50 flex items-center justify-center px-4 py-1.5 bg-white/80 backdrop-blur-md rounded-full border border-slate-200 shadow-sm hover:shadow-md transition-shadow cursor-default" title="Active Server Node">
+        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2 animate-pulse"></div>
+        <span class="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest">Server: {{ gethostname() }}</span>
     </div>
 </body>
 </html>
