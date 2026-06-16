@@ -56,6 +56,30 @@ TraciF dirancang menggunakan pendekatan _Highly Available_ (HA) dengan mendistri
 
 ---
 
+## 📁 Struktur Direktori Proyek
+
+Proyek ini dibangun di atas _framework_ Laravel dengan struktur hierarki standar berikut:
+
+```text
+tracif/
+├── app/                  # Berisi core logic aplikasi (Controllers, Models, Middleware)
+├── bootstrap/            # Skrip pemuat awal (_bootstrapping_) aplikasi
+├── config/               # File konfigurasi global aplikasi
+├── database/             # File Migrations (skema tabel) dan Seeders (data dummy awal)
+├── docs/                 # Berisi laporan praktikum dan panduan deployment (Markdown)
+├── public/               # Aset yang dapat diakses publik (gambar, CSS ter-build, JS, index.php)
+├── resources/            # Berisi _views_ (Blade templates) dan _raw assets_ (Tailwind CSS/JS)
+├── routes/               # Berisi definisi rute URL/endpoint aplikasi (web.php)
+├── storage/              # Tempat penyimpanan log, *cache* framework, dan file unggahan pengguna
+├── .env.example          # Template file environment (variabel sistem)
+├── artisan               # *Command-line interface* (CLI) bawaan Laravel
+├── composer.json         # Konfigurasi dan daftar dependensi *backend* (PHP)
+├── package.json          # Konfigurasi dan daftar dependensi *frontend* (NPM)
+└── README.md             # File dokumentasi utama ini
+```
+
+---
+
 ## 💻 Instalasi Lokal (Development)
 
 Jika Anda ingin menjalankan aplikasi ini di komputer lokal, jalankan perintah berikut:
