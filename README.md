@@ -51,9 +51,6 @@ TraciF dirancang menggunakan pendekatan _Highly Available_ (HA) dengan mendistri
 2. **Web Server (Compute)**: 2x Virtual Machine (VM-APP-01 & VM-APP-02) berbasis Ubuntu 22.04 LTS yang menjalankan Nginx dan PHP-FPM.
 3. **Database Server**: Azure Database for MySQL Flexible Server yang bertindak sebagai _shared database_ agar semua transaksi tersinkronisasi.
 
-> [!NOTE]  
-> Laporan lengkap tentang konfigurasi arsitektur cloud, _load balancing_, dan cara menduplikasi infrastruktur ini tersedia di [Laporan Konfigurasi Infrastruktur Cloud](docs/Laporan_Konfigurasi_Infrastruktur.md).
-
 ---
 
 ## 📁 Struktur Direktori Proyek
@@ -66,7 +63,6 @@ tracif/
 ├── bootstrap/            # Skrip pemuat awal (_bootstrapping_) aplikasi
 ├── config/               # File konfigurasi global aplikasi
 ├── database/             # File Migrations (skema tabel) dan Seeders (data dummy awal)
-├── docs/                 # Berisi laporan praktikum dan panduan deployment (Markdown)
 ├── public/               # Aset yang dapat diakses publik (gambar, CSS ter-build, JS, index.php)
 ├── resources/            # Berisi _views_ (Blade templates) dan _raw assets_ (Tailwind CSS/JS)
 ├── routes/               # Berisi definisi rute URL/endpoint aplikasi (web.php)
