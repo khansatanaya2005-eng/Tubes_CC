@@ -108,15 +108,4 @@ php artisan migrate --seed
 php artisan serve
 ```
 
----
 
-## 👥 Tim Pengembang (Kelompok CC)
-
-Aplikasi dan infrastruktur ini dibangun oleh:
-
-| Nama | Peran |
-|------|-------|
-| Satanaya Khan | Lead Developer / Cloud Architect |
-| Faris Naufal | Senior Full Stack Developer |
-
----
