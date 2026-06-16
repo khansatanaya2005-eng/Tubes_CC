@@ -1,7 +1,7 @@
 <div align="center">
   <img src="public/images/tracif-logo.png" alt="TraciF Logo" width="150"/>
-  <h1>TraciF</h1>
-  <p><strong>Enterprise Cloud-Native Sales Management System</strong></p>
+  <h1>TraciF Hospitality System</h1>
+  <p><strong>Aplikasi Manajemen Restoran Berbasis Cloud Terintegrasi</strong></p>
 
   <p>
     <img src="https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel" alt="Laravel 11">
@@ -14,100 +14,93 @@
 
 ---
 
-## 📖 Master Documentation
-> [!IMPORTANT]
-> This README provides a quick overview. For the **Complete Enterprise Transformation Report**, including Azure Architecture, Nginx Configurations, Security Assessments, Cost Optimizations, and DevOps Planning, please see:
-> 👉 **[TraciF Enterprise Report](docs/TraciF_Enterprise_Report.md)**
+## 📖 Tentang Proyek
+
+**TraciF Hospitality System** adalah aplikasi manajemen restoran modern yang difungsikan untuk mempermudah operasional F&B. Aplikasi ini mendukung input pesanan pelanggan, monitoring grafik penjualan secara _real-time_, dan pengelolaan pembayaran secara online. Proyek ini di-hosting menggunakan arsitektur *High Availability* di Microsoft Azure.
 
 ---
 
-## 1. Project Overview
+## 🚀 Fitur Utama
 
-**TraciF** is an enterprise-grade Point of Sale (POS) and Customer Relationship Management (CRM) system designed for retail and wholesale businesses. It enables real-time transaction tracking, fast-moving inventory management, and centralized customer history logging. Engineered for the Cloud, it features a highly available architecture designed for Microsoft Azure.
+- **Katalog Menu Digital**: Katalog produk/menu makanan dan minuman untuk pelanggan.
+- **Sistem Pemesanan Mandiri (Direct Ordering)**: Memungkinkan pelanggan melakukan _checkout_ langsung dari aplikasi.
+- **Dashboard Analitik & Monitoring**: Grafik interaktif performa penjualan dan pesanan untuk pengelola restoran.
+- **Manajemen Produk (Menu)**: Admin dapat menambahkan, mengubah, atau menghapus menu.
+- **Order Tracking**: Pemantauan status pesanan secara *real-time* (Pending, Processing, Completed).
+- **Manajemen Pelanggan**: Basis data pelanggan yang terpusat.
+- **Laporan Penjualan**: Rekapitulasi transaksi dan pendapatan untuk restoran.
 
-## 2. Features
+---
 
-- **RBAC Authentication**: Secure role-based access control.
-- **Inventory Management**: Product cataloging with image uploads.
-- **CRM Database**: Centralized customer tracking.
-- **Point of Sale (POS)**: Internal shopping cart and checkout system.
-- **Real-Time Notifications**: In-app alerts for new transactions.
-- **Visual Analytics**: Interactive performance dashboard.
+## 🛠️ Komponen Teknologi
 
-## 3. Technology Stack
+| Komponen | Keterangan |
+|----------|------------|
+| **Frontend** | HTML, CSS, JavaScript (Tailwind CSS, Alpine.js, Blade) |
+| **Backend** | PHP Laravel 11.x |
+| **Database** | MySQL |
+| **Web Server** | Nginx + PHP-FPM |
+| **Platform Cloud** | Microsoft Azure |
 
-- **Backend**: Laravel 11.x, PHP 8.2+
-- **Frontend**: Tailwind CSS, Alpine.js, Blade
-- **Database**: MySQL 8.0
-- **Cloud Infrastructure**: Microsoft Azure (VMs, MySQL Flexible Server, Load Balancer)
-- **CI/CD**: GitHub Actions
+---
 
-## 4. Quick Architecture
+## ☁️ Arsitektur Infrastruktur Cloud (Azure)
 
-TraciF utilizes a standard 3-Tier Layered Architecture deployed across a horizontally scalable cloud topology:
-- **Load Balancer**: Nginx reverse proxy distributing traffic.
-- **Compute Layer**: Multiple Azure VMs (Standard_B1s) running PHP 8.2-FPM.
-- **Data Layer**: Centralized Azure Database for MySQL Flexible Server.
+TraciF dirancang menggunakan pendekatan _Highly Available_ (HA) dengan mendistribusikan beban kerja secara seimbang ke beberapa server menggunakan arsitektur berikut:
+1. **Load Balancer**: Azure Standard Public Load Balancer sebagai pintu masuk utama yang mendistribusikan trafik HTTP.
+2. **Web Server (Compute)**: 2x Virtual Machine (VM-APP-01 & VM-APP-02) berbasis Ubuntu 22.04 LTS yang menjalankan Nginx dan PHP-FPM.
+3. **Database Server**: Azure Database for MySQL Flexible Server yang bertindak sebagai _shared database_ agar semua transaksi tersinkronisasi.
 
-## 5. Installation
+> [!NOTE]  
+> Laporan lengkap tentang konfigurasi arsitektur cloud, _load balancing_, dan cara menduplikasi infrastruktur ini tersedia di [Laporan Konfigurasi Infrastruktur Cloud](docs/Laporan_Konfigurasi_Infrastruktur.md).
+
+---
+
+## 💻 Instalasi Lokal (Development)
+
+Jika Anda ingin menjalankan aplikasi ini di komputer lokal, jalankan perintah berikut:
 
 ```bash
-# Clone the repository
+# 1. Clone repository
 git clone https://github.com/khansatanaya2005-eng/Tubes_CC.git tracif
 cd tracif
 
-# Install PHP dependencies
+# 2. Install dependensi backend
 composer install
 
-# Install Frontend dependencies
-npm install
-npm run build
-```
-
-## 6. Configuration
-
-```bash
-# Copy environment file
+# 3. Copy file environment dan atur koneksi DB Anda
 cp .env.example .env
 
-# Generate Application Key
+# 4. Generate Application Key
 php artisan key:generate
 
-# Link Storage
+# 5. Link folder storage
 php artisan storage:link
-```
-Ensure your `.env` is configured with your database credentials. For production, **strictly ensure** `APP_DEBUG=false`.
 
-## 7. Running the Application
+# 6. Install dependensi frontend & build
+npm install
+npm run build
 
-```bash
-# Run database migrations and seeders
+# 7. Jalankan migrasi dan seeder database
 php artisan migrate --seed
 
-# Start the local development server
+# 8. Jalankan server lokal
 php artisan serve
 ```
 
-## 8. Testing
+---
 
-Testing strategies are defined in the Enterprise Report. To run the automated suite:
-```bash
-php artisan test
-```
+## 👥 Tim Pengembang (Kelompok CC)
 
-## 9. Quick Deployment Overview
+Aplikasi dan infrastruktur ini dibangun oleh:
 
-TraciF is configured for Azure Web Apps and VMs. Push to the `main` branch to trigger the GitHub Actions workflow, which automatically installs dependencies and deploys the production build to Azure.
+| Nama | Peran |
+|------|-------|
+| Satanaya Khan | Lead Developer / Cloud Architect |
+| Faris Naufal | Senior Full Stack Developer |
 
-For the extensive Nginx Load Balancer and multi-VM deployment guide, see the [Master Report](docs/TraciF_Enterprise_Report.md).
+---
 
-## 10. Contributors
+## 📄 Lisensi
 
-| Nama | NIM | Role |
-|------|-----|------|
-| Satanaya Khan | [Update NIM] | Lead Developer / Cloud Architect |
-| Faris Naufal | [Update NIM] | Senior Full Stack Developer |
-
-## License
-
-This project is licensed under the MIT License.
+Proyek ini berada di bawah lisensi MIT.
