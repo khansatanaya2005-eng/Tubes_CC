@@ -100,7 +100,3 @@ Aplikasi dan infrastruktur ini dibangun oleh:
 | Faris Naufal | Senior Full Stack Developer |
 
 ---
-
-## 📄 Lisensi
-
-Proyek ini berada di bawah lisensi MIT.
